@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 struct lg_stack;
+struct lg_str;
 struct lg_type;
 
 struct lg_val {
@@ -14,6 +15,7 @@ struct lg_val {
     int64_t as_int64;
     struct lg_type *as_meta;
     struct lg_stack *as_stack;
+    struct lg_str *as_str;
   };
 };
 

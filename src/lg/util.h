@@ -35,6 +35,6 @@
 #define lg_unique(x)				\
   lg_id(x, __COUNTER__)
 
-char *lg_strdup(const char *in);
+char *lg_strdup(const char *in, size_t *out_len);
 
 #endif

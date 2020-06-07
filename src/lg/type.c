@@ -4,7 +4,7 @@
 #include "lg/util.h"
 
 struct lg_type *lg_type_init(struct lg_type *type, const char *id) {
-  type->id = lg_strdup(id);
+  type->id = lg_strdup(id, NULL);
   type->refs = 1;
 
   type->ref_val = NULL;
