@@ -8,6 +8,7 @@ struct lg_stack {
   struct lg_slab items;
 };
 
+struct lg_stack *lg_stack_new();
 struct lg_stack *lg_stack_init(struct lg_stack *stack);
 void lg_stack_deinit(struct lg_stack *stack);
 void lg_stack_grow(struct lg_stack *stack, size_t cap);

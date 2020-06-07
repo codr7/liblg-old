@@ -1,6 +1,1 @@
-* use lg_align in slab
-* add lg_stack based on slab
-** slab items/refs
-** add stack type
-** lg_stack *as_stack
-** commit
+
