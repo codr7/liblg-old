@@ -2,6 +2,7 @@
 #include "lg/stack.h"
 #include "lg/str.h"
 #include "lg/type.h"
+#include "lg/types/bool.h"
 #include "lg/types/int64.h"
 #include "lg/types/meta.h"
 #include "lg/types/stack.h"
@@ -28,6 +29,10 @@ void stack_tests() {
 }
 
 void val_tests() {
+  struct lg_val _bool;
+  lg_val_init(&_bool, &lg_bool_type)->as_bool = true;
+  lg_deref(&_bool);
+
   struct lg_val int64;
   lg_val_init(&int64, &lg_int64_type)->as_int64 = 42;
   lg_deref(&int64);

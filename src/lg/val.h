@@ -12,6 +12,7 @@ struct lg_val {
   struct lg_type *type;
   
   union {
+    bool as_bool;
     int64_t as_int64;
     struct lg_type *as_meta;
     struct lg_stack *as_stack;
