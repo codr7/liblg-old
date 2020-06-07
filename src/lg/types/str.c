@@ -10,11 +10,7 @@
 struct lg_type lg_str_type;
 
 static void ref_val(struct lg_val *val) {
-  struct lg_str *v = val->as_str;
-
-  if (v->refs != -1) {
-    v->refs++;
-  }
+  lg_str_ref(val->as_str);
 }
 
 static bool deref_val(struct lg_val *val) {

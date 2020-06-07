@@ -13,6 +13,7 @@ struct lg_str {
 struct lg_str *lg_str_new(const char *data);
 struct lg_str *lg_str_init(struct lg_str *str, const char *data);
 void lg_str_deinit(struct lg_str *str);
+struct lg_str *lg_str_ref(struct lg_str *str);
 bool lg_str_deref(struct lg_str *str);
 
 #endif

@@ -11,3 +11,9 @@ struct lg_pos *lg_pos_init(struct lg_pos *pos, const char *path, int16_t row, in
 void lg_pos_deinit(struct lg_pos *pos) {
   lg_str_deref(pos->path);
 }
+
+void lg_pos_copy(struct lg_pos *src, struct lg_pos *dst) {
+  dst->path = lg_str_ref(src->path);
+  dst->row = src->row;
+  dst->col = src->col;
+}

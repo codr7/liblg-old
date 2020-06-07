@@ -17,6 +17,11 @@ void lg_str_deinit(struct lg_str *str) {
   free(str->data);
 }
 
+struct lg_str *lg_str_ref(struct lg_str *str) {
+  str->refs++;
+  return str;
+}
+
 bool lg_str_deref(struct lg_str *str) {
   if (!--str->refs) {
     lg_str_deinit(str);

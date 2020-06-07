@@ -1,5 +1,4 @@
-* add bool type
-* add lg_pos_copy(struct lg_pos *)
-** move code from Str ref_val() to lg_str_ref()
+* add lg_type.copy/clone_val
+** implement for types
 * add parser
 * add lg_function/method
