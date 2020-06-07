@@ -1,0 +1,11 @@
+#include "lg/init.h"
+#include "lg/type.h"
+#include "lg/types/meta.h"
+
+void lg_init() {
+  lg_meta_type_init();
+}
+
+void lg_deinit() {
+  lg_type_deinit(&lg_meta_type);
+}
