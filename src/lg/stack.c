@@ -8,8 +8,8 @@ struct lg_stack *lg_stack_new() {
 }
 
 struct lg_stack *lg_stack_init(struct lg_stack *stack) {
-  stack->refs = 1;
   lg_slab_init(&stack->items);
+  stack->refs = 1;
   return stack;
 }
 
@@ -19,6 +19,10 @@ void lg_stack_deinit(struct lg_stack *stack) {
 
 void lg_stack_grow(struct lg_stack *stack, size_t cap) {
   lg_slab_grow(&stack->items, sizeof(struct lg_val), cap);
+}
+
+size_t lg_stack_len(struct lg_stack *stack) {
+  return stack->items.len;
 }
 
 struct lg_val *lg_stack_push(struct lg_stack *stack) {

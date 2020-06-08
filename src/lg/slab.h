@@ -14,7 +14,9 @@ struct lg_slab {
 struct lg_slab *lg_slab_init(struct lg_slab *slab);
 void lg_slab_deinit(struct lg_slab *slab);
 void lg_slab_grow(struct lg_slab *slab, size_t size, size_t cap);
+void *lg_slab_get(struct lg_slab *slab, size_t size, size_t i);
 void *lg_slab_push(struct lg_slab *slab, size_t size);
 void *lg_slab_pop(struct lg_slab *slab, size_t size);
+void *lg_slab_insert(struct lg_slab *slab, size_t size, size_t i);
 
 #endif

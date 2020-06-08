@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "lg/slab.h"
 #include "lg/util.h"
@@ -20,12 +21,16 @@ void lg_slab_grow(struct lg_slab *slab, size_t size, size_t cap) {
   slab->cap = cap;
 }
 
+void *lg_slab_get(struct lg_slab *slab, size_t size, size_t i) {
+  return slab->slots + lg_align(0, size)*i;
+}
+
 void *lg_slab_push(struct lg_slab *slab, size_t size) {
   if (slab->len == slab->cap) {
     lg_slab_grow(slab, size, slab->cap ? slab->cap*LG_SLAB_N : LG_SLAB_N);
   }
 
-  return slab->slots + lg_align(0, size)*slab->len++;
+  return lg_slab_get(slab, size, slab->len++);
 }
 
 void *lg_slab_pop(struct lg_slab *slab, size_t size) {
@@ -33,5 +38,22 @@ void *lg_slab_pop(struct lg_slab *slab, size_t size) {
     return NULL;
   }
 
-  return slab->slots + lg_align(0, size)*--slab->len;
+  return lg_slab_get(slab, size, --slab->len);
 }
+
+void *lg_slab_insert(struct lg_slab *slab, size_t size, size_t i) {
+  if (i == slab->len) {
+    return lg_slab_push(slab, size);
+  }
+
+  if (slab->len == slab->cap) {
+    lg_slab_grow(slab, size, slab->cap ? slab->cap*LG_SLAB_N : LG_SLAB_N);
+  }
+
+  const size_t s = lg_align(0, size);
+  uint8_t *const p = slab->slots + s*i;
+  memmove(p+s, p, (slab->len-i)*s);
+  slab->len++;
+  return p;
+}
+

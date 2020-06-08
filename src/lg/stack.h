@@ -4,14 +4,15 @@
 #include "lg/slab.h"
 
 struct lg_stack {
-  int refs;
   struct lg_slab items;
+  int refs;
 };
 
 struct lg_stack *lg_stack_new();
 struct lg_stack *lg_stack_init(struct lg_stack *stack);
 void lg_stack_deinit(struct lg_stack *stack);
 void lg_stack_grow(struct lg_stack *stack, size_t cap);
+size_t lg_stack_len(struct lg_stack *stack);
 struct lg_val *lg_stack_push(struct lg_stack *stack);
 struct lg_val *lg_stack_pop(struct lg_stack *stack);
 

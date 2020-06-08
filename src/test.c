@@ -1,3 +1,4 @@
+#include "lg/bset.h"
 #include "lg/init.h"
 #include "lg/stack.h"
 #include "lg/str.h"
@@ -11,7 +12,36 @@
 
 #include <assert.h>
 
-void stack_tests() {
+static enum lg_cmp cmp_int(const void *x, const void *y) {
+  int xv = *(const int *)x, yv = *(const int *)y;
+
+  if (xv < yv) {
+    return LG_LT;
+  }
+
+  return (xv > yv) ? LG_GT : LG_EQ;
+}
+
+static void bset_tests() {
+  const int MAX = 10000;
+  
+  struct lg_bset s;
+  lg_bset_init(&s, sizeof(int), cmp_int);
+  
+  for (int i = MAX-1; i >= 0; i--) {
+    *(int *)lg_bset_add(&s, &i) = i;
+  }
+
+  assert(lg_bset_len(&s) == MAX);
+  
+  for (int i = 0; i < MAX; i++) {
+    assert(*(int *)lg_bset_get(&s, &i) == i);
+  }
+
+  lg_bset_deinit(&s);
+}
+
+static void stack_tests() {
   const int64_t MAX = 10000;
   
   struct lg_stack s;
@@ -21,6 +51,8 @@ void stack_tests() {
     lg_stack_push(&s)->as_int64 = i;
   }
 
+  assert(lg_stack_len(&s) == MAX);
+
   for (int64_t i = 0; i < MAX; i++) {
     assert(lg_stack_pop(&s)->as_int64 == MAX-i-1);
   }
@@ -28,7 +60,7 @@ void stack_tests() {
   lg_stack_deinit(&s);
 }
 
-void val_tests() {
+static void val_tests() {
   struct lg_val _bool;
   lg_val_init(&_bool, &lg_bool_type)->as_bool = true;
   lg_deref(&_bool);
@@ -54,6 +86,7 @@ void val_tests() {
 int main() {
   lg_init();
 
+  bset_tests();
   stack_tests();
   val_tests();
 
