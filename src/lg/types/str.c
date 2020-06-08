@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "lg/str.h"
 #include "lg/type.h"
@@ -8,6 +9,18 @@
 #include <stdio.h>
 
 struct lg_type lg_str_type;
+
+static void copy_val(struct lg_val *src, struct lg_val *dst) {
+  dst->as_str = lg_str_ref(src->as_str);
+}
+
+static void clone_val(struct lg_val *src, struct lg_val *dst) {
+  struct lg_str *ss = src->as_str, *ds = malloc(sizeof(struct lg_str));
+  dst->as_str = ds;
+  ds->len = ss->len;
+  ds->data = malloc(ds->len+1);
+  strcpy(ds->data, ss->data);
+}
 
 static void ref_val(struct lg_val *val) {
   lg_str_ref(val->as_str);
@@ -20,6 +33,8 @@ static bool deref_val(struct lg_val *val) {
 void lg_str_type_init() {
     lg_type_init(&lg_str_type, "Str");
     lg_str_type.refs = -1;
+    lg_str_type.copy_val = copy_val;
+    lg_str_type.clone_val = clone_val;
     lg_str_type.ref_val = ref_val;
     lg_str_type.deref_val = deref_val;
 }

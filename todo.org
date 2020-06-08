@@ -1,5 +1,4 @@
-* add lg_type.copy/clone_val
-** implement for types
 * add Set type
+** copy Stack
 * add parser
 * add lg_function/method

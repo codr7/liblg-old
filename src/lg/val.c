@@ -21,3 +21,15 @@ bool lg_deref(struct lg_val *val) {
 
   return true;
 }
+
+void lg_copy(struct lg_val *src, struct lg_val *dst) {
+  struct lg_type *t = src->type;
+  dst->type = t;
+  t->copy_val(src, dst);
+}
+
+void lg_clone(struct lg_val *src, struct lg_val *dst) {
+  struct lg_type *t = src->type;
+  dst->type = t;
+  t->clone_val(src, dst);
+}

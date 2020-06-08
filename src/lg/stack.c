@@ -17,6 +17,28 @@ void lg_stack_deinit(struct lg_stack *stack) {
   lg_slab_deinit(&stack->items);
 }
 
+struct lg_stack *lg_stack_ref(struct lg_stack *stack) {
+  if (stack->refs != -1) {
+    stack->refs++;
+  }
+
+  return stack;
+}
+
+bool lg_stack_deref(struct lg_stack *stack) {
+  if (stack->refs == -1) {
+    return false;
+  }
+
+  if (!--stack->refs) {
+    lg_stack_deinit(stack);
+    free(stack);
+    return true;
+  }
+
+  return false;
+}
+
 void lg_stack_grow(struct lg_stack *stack, size_t cap) {
   lg_slab_grow(&stack->items, sizeof(struct lg_val), cap);
 }
