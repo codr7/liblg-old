@@ -17,8 +17,8 @@ void lg_slab_deinit(struct lg_slab *slab) {
 }
 
 void lg_slab_grow(struct lg_slab *slab, size_t size, size_t cap) {
-  slab->slots = realloc(slab->slots, lg_align(0, size)*cap);
-  slab->cap = cap;
+  slab->cap = cap ? cap : LG_SLAB_N;
+  slab->slots = realloc(slab->slots, lg_align(0, size)*slab->cap);
 }
 
 void *lg_slab_get(struct lg_slab *slab, size_t size, size_t i) {
@@ -27,7 +27,7 @@ void *lg_slab_get(struct lg_slab *slab, size_t size, size_t i) {
 
 void *lg_slab_push(struct lg_slab *slab, size_t size) {
   if (slab->len == slab->cap) {
-    lg_slab_grow(slab, size, slab->cap ? slab->cap*LG_SLAB_N : LG_SLAB_N);
+    lg_slab_grow(slab, size, slab->cap*LG_SLAB_N);
   }
 
   return lg_slab_get(slab, size, slab->len++);
@@ -47,7 +47,7 @@ void *lg_slab_insert(struct lg_slab *slab, size_t size, size_t i) {
   }
 
   if (slab->len == slab->cap) {
-    lg_slab_grow(slab, size, slab->cap ? slab->cap*LG_SLAB_N : LG_SLAB_N);
+    lg_slab_grow(slab, size, slab->cap*LG_SLAB_N);
   }
 
   const size_t s = lg_align(0, size);
