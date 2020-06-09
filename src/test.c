@@ -60,27 +60,40 @@ static void stack_tests() {
   lg_stack_deinit(&s);
 }
 
-static void val_tests() {
-  struct lg_val _bool;
-  lg_val_init(&_bool, &lg_bool_type)->as_bool = true;
-  lg_deref(&_bool);
-
-  struct lg_val int64;
-  lg_val_init(&int64, &lg_int64_type)->as_int64 = 42;
-  lg_deref(&int64);
+static void test_val(struct lg_val *v) {
+  assert(lg_is(v, v));
+  assert(lg_eq(v, v));
   
-  struct lg_val meta;
-  lg_val_init(&meta, &lg_meta_type)->as_meta = &lg_int64_type;
-  lg_deref(&meta);
+  struct lg_val cv;
+  lg_copy(v, &cv);
+  assert(lg_is(v, &cv));
+  lg_deref(&cv);
+}
 
-  struct lg_val stack;
-  lg_val_init(&stack, &lg_stack_type)->as_stack = lg_stack_new();
-  lg_deref(&stack);  
+static void val_tests() {
+  struct lg_val v;
+  lg_val_init(&v, &lg_bool_type)->as_bool = true;
+  test_val(&v);
+  lg_deref(&v);
 
-  struct lg_val str;
-  lg_val_init(&str, &lg_str_type)->as_str = lg_str_new("foo");
-  assert(str.as_str->len == 3);
-  lg_deref(&str);  
+  lg_val_init(&v, &lg_int64_type)->as_int64 = 42;
+  test_val(&v);
+  lg_deref(&v);
+  
+  lg_val_init(&v, &lg_meta_type)->as_meta = &lg_int64_type;
+  test_val(&v);
+  lg_deref(&v);
+
+  struct lg_stack *stack = lg_stack_new();
+  lg_val_init(&v, &lg_stack_type)->as_stack = stack;
+  lg_val_init(lg_stack_push(stack), &lg_str_type)->as_str = lg_str_new("foo"); 
+  test_val(&v);
+  lg_deref(&v);
+
+  lg_val_init(&v, &lg_str_type)->as_str = lg_str_new("foo");
+  test_val(&v);
+  assert(v.as_str->len == 3);
+  lg_deref(&v);  
 }
 
 int main() {

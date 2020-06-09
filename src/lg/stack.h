@@ -19,6 +19,7 @@ bool lg_stack_deref(struct lg_stack *stack);
 
 void lg_stack_grow(struct lg_stack *stack, size_t cap);
 size_t lg_stack_len(struct lg_stack *stack);
+struct lg_val *lg_stack_get(struct lg_stack *stack, size_t i);
 struct lg_val *lg_stack_push(struct lg_stack *stack);
 struct lg_val *lg_stack_pop(struct lg_stack *stack);
 

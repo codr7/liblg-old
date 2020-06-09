@@ -12,6 +12,9 @@ struct lg_type {
   void (*copy_val)(struct lg_val *src, struct lg_val *dst);
   void (*clone_val)(struct lg_val *src, struct lg_val *dst);
 
+  bool (*is_val)(struct lg_val *x, struct lg_val *y);
+  bool (*eq_val)(struct lg_val *x, struct lg_val *y);
+  
   void (*ref_val)(struct lg_val *);
   bool (*deref_val)(struct lg_val *);
 };
