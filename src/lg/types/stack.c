@@ -33,8 +33,10 @@ static bool eq_val(struct lg_val *x, struct lg_val *y) {
     return false;
   }
   
-  for (size_t i = 0; i < xl; i++) {
-    if (!lg_eq(lg_stack_get(xs, i), lg_stack_get(ys, i))) {
+  struct lg_val *xv = (struct lg_val *)xs->items.slots, *yv = (struct lg_val *)ys->items.slots;
+  
+  for (size_t i = 0; i < xl; i++, xv++, yv++) {
+    if (!lg_eq(xv, yv)) {
       return false;
     }
   }			   

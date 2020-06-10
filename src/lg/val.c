@@ -10,15 +10,15 @@ struct lg_val *lg_val_init(struct lg_val *val, struct lg_type *type) {
 
 void lg_copy(struct lg_val *src, struct lg_val *dst) {
   struct lg_type *t = src->type;
-  dst->type = t;
   assert(t->copy_val);
+  dst->type = t;
   t->copy_val(src, dst);
 }
 
 void lg_clone(struct lg_val *src, struct lg_val *dst) {
   struct lg_type *t = src->type;
-  dst->type = t;
   assert(t->clone_val);
+  dst->type = t;
   t->clone_val(src, dst);
 }
 

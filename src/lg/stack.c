@@ -51,14 +51,16 @@ size_t lg_stack_len(struct lg_stack *stack) {
   return stack->items.len;
 }
 
-struct lg_val *lg_stack_get(struct lg_stack *stack, size_t i) {
-  return lg_slab_get(&stack->items, sizeof(struct lg_val), i);
-}
-
-struct lg_val *lg_stack_push(struct lg_stack *stack) {
+struct lg_val *lg_push(struct lg_stack *stack) {
   return (struct lg_val *)lg_slab_push(&stack->items, sizeof(struct lg_val));
 }
 
-struct lg_val *lg_stack_pop(struct lg_stack *stack) {
+struct lg_val *lg_pop(struct lg_stack *stack) {
   return (struct lg_val *)lg_slab_pop(&stack->items, sizeof(struct lg_val));
 }
+
+struct lg_val *lg_peek(struct lg_stack *stack) {
+  struct lg_slab *is = &stack->items;
+  return lg_slab_get(is, sizeof(struct lg_val), is->len-1);
+}
+

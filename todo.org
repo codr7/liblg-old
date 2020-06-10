@@ -1,4 +1,4 @@
-* add parser
 * add lg_function/method
+* add parser
 * add Set type
 ** copy Stack

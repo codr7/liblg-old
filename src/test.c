@@ -1,5 +1,7 @@
+#include "lg/block.h"
 #include "lg/bset.h"
 #include "lg/init.h"
+#include "lg/op.h"
 #include "lg/stack.h"
 #include "lg/str.h"
 #include "lg/type.h"
@@ -11,6 +13,7 @@
 #include "lg/val.h"
 
 #include <assert.h>
+#include <stdio.h>
 
 static enum lg_cmp cmp_int(const void *x, const void *y) {
   int xv = *(const int *)x, yv = *(const int *)y;
@@ -41,6 +44,30 @@ static void bset_tests() {
   lg_bset_deinit(&s);
 }
 
+static void eval_tests()  {
+  struct lg_block block;
+  lg_block_init(&block);
+
+  struct lg_pos pos;
+  lg_pos_init(&pos, "eval_tests", -1, -1);
+
+  struct lg_val *v = lg_val_init(&lg_emit(&block, LG_PUSH, pos)->as_push.val, &lg_int64_type);
+  v->as_int64 = 42;
+
+  lg_emit(&block, LG_STOP, pos);
+
+  struct lg_stack stack;
+  lg_stack_init(&stack);
+
+  lg_eval(lg_block_start(&block), &stack);
+  assert(lg_stack_len(&stack) == 1);
+  assert(lg_peek(&stack)->as_int64 == 42);
+  
+  lg_stack_deinit(&stack);
+  lg_pos_deinit(&pos);
+  lg_block_deinit(&block);
+}
+
 static void stack_tests() {
   const int64_t MAX = 10000;
   
@@ -48,13 +75,15 @@ static void stack_tests() {
   lg_stack_init(&s);
   
   for (int64_t i = 0; i < MAX; i++) {
-    lg_stack_push(&s)->as_int64 = i;
+    lg_val_init(lg_push(&s), &lg_int64_type)->as_int64 = i;
   }
 
   assert(lg_stack_len(&s) == MAX);
 
   for (int64_t i = 0; i < MAX; i++) {
-    assert(lg_stack_pop(&s)->as_int64 == MAX-i-1);
+    struct lg_val *v = lg_pop(&s);
+    assert(v->type == &lg_int64_type);
+    assert(v->as_int64 == MAX-i-1);
   }
 
   lg_stack_deinit(&s);
@@ -86,7 +115,7 @@ static void val_tests() {
 
   struct lg_stack *stack = lg_stack_new();
   lg_val_init(&v, &lg_stack_type)->as_stack = stack;
-  lg_val_init(lg_stack_push(stack), &lg_str_type)->as_str = lg_str_new("foo"); 
+  lg_val_init(lg_push(stack), &lg_str_type)->as_str = lg_str_new("foo"); 
   test_val(&v);
   lg_deref(&v);
 
@@ -100,6 +129,7 @@ int main() {
   lg_init();
 
   bset_tests();
+  eval_tests();
   stack_tests();
   val_tests();
 
