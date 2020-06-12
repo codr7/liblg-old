@@ -1,4 +1,11 @@
-* add lg_function/method
-* add parser
-* add Set type
-** copy Stack
+* add struct lg_vm.stack
+** replace eval stack arg
+* add struct lg_vm.env
+** add struct lg_env based on bset
+* add let macro
+** map name to stack pos
+** store bindings at bottom of stack
+* ---
+* change int types to fixed size
+** int16_t refs
+* remove _deinit() for ref structs

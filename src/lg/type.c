@@ -38,18 +38,11 @@ void lg_type_deinit(struct lg_type *type) {
 }
 
 struct lg_type *lg_type_ref(struct lg_type *type) {
-  if (type->refs != -1) {
-    type->refs++;
-  }
-
+  type->refs++;
   return type;
 }
 
 bool lg_type_deref(struct lg_type *type) {
-  if (type->refs == -1) {
-    return false;
-  }
-  
   if (!--type->refs) {
     lg_type_deinit(type);
     free(type);

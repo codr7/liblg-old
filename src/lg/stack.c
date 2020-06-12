@@ -1,7 +1,6 @@
 #include <stdlib.h>
 
 #include "lg/stack.h"
-#include "lg/val.h"
 
 struct lg_stack *lg_stack_new() {
   return lg_stack_init(malloc(sizeof(struct lg_stack)));

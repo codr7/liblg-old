@@ -40,7 +40,6 @@ static bool deref_val(struct lg_val *val) {
 
 void lg_str_type_init() {
     lg_type_init(&lg_str_type, "Str");
-    lg_str_type.refs = -1;
     lg_str_type.copy_val = copy_val;
     lg_str_type.clone_val = clone_val;
     lg_str_type.is_val = is_val;

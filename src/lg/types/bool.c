@@ -10,6 +10,5 @@ static bool is_val(struct lg_val *x, struct lg_val *y) {
 
 void lg_bool_type_init() {
     lg_type_init(&lg_bool_type, "Bool");
-    lg_bool_type.refs = -1;
     lg_bool_type.is_val = is_val;
 }

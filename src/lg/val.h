@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+struct lg_error;
 struct lg_stack;
 struct lg_str;
 struct lg_type;
@@ -13,6 +14,8 @@ struct lg_val {
   
   union {
     bool as_bool;
+    struct lg_error *as_error;
+    struct lg_form *as_form;
     int64_t as_int64;
     struct lg_type *as_meta;
     struct lg_stack *as_stack;
