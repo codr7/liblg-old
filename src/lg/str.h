@@ -3,11 +3,12 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 struct lg_str {
   char *data;
   size_t len;
-  int refs;
+  int16_t refs;
 };
 
 struct lg_str *lg_str_new(const char *data);

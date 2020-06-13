@@ -1,7 +1,7 @@
-#include <stdlib.h>
 #include <string.h>
 
 #include "lg/stack.h"
+#include "lg/str.h"
 #include "lg/type.h"
 #include "lg/types/stack.h"
 #include "lg/util.h"
@@ -53,11 +53,11 @@ static bool deref_val(struct lg_val *val) {
 }
 
 void lg_stack_type_init() {
-    lg_type_init(&lg_stack_type, "Stack");
-    lg_stack_type.copy_val = copy_val;
-    lg_stack_type.clone_val = clone_val;
-    lg_stack_type.is_val = is_val;
-    lg_stack_type.eq_val = eq_val;
-    lg_stack_type.ref_val = ref_val;
-    lg_stack_type.deref_val = deref_val;
+  lg_type_init(&lg_stack_type, lg_str_new("Stack"));
+  lg_stack_type.copy_val = copy_val;
+  lg_stack_type.clone_val = clone_val;
+  lg_stack_type.is_val = is_val;
+  lg_stack_type.eq_val = eq_val;
+  lg_stack_type.ref_val = ref_val;
+  lg_stack_type.deref_val = deref_val;
 }

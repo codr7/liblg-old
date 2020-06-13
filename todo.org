@@ -1,10 +1,12 @@
-* add struct lg_vm.stack
-** replace eval stack arg
-* add struct lg_vm.env
-** add struct lg_env based on bset
+* switch push op to clone val
+* add lg_compile(lg_vm, lg_stack, lg_block)
+** push bindings
+** add to env tests
 * add let macro
 ** map name to stack pos
 ** store bindings at bottom of stack
+** lookup macro in parse_id
+* replace eval stack arg with vm
 * ---
 * change int types to fixed size
 ** int16_t refs

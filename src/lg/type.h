@@ -2,12 +2,14 @@
 #define LG_TYPE_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
+struct lg_str;
 struct lg_val;
 
 struct lg_type {
-  char *id;
-  int refs;
+  struct lg_str *id;
+  int16_t refs;
   
   void (*copy_val)(struct lg_val *src, struct lg_val *dst);
   void (*clone_val)(struct lg_val *src, struct lg_val *dst);
@@ -19,7 +21,7 @@ struct lg_type {
   bool (*deref_val)(struct lg_val *);
 };
 
-struct lg_type *lg_type_init(struct lg_type *type, const char *id);
+struct lg_type *lg_type_init(struct lg_type *type, struct lg_str *id);
 void lg_type_deinit(struct lg_type *type);
 
 struct lg_type *lg_type_ref(struct lg_type *type);

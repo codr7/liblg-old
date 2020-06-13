@@ -1,7 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
-
 #include "lg/error.h"
+#include "lg/str.h"
 #include "lg/type.h"
 #include "lg/val.h"
 
@@ -24,9 +22,9 @@ static bool deref_val(struct lg_val *val) {
 }
 
 void lg_error_type_init() {
-    lg_type_init(&lg_error_type, "Error");
-    lg_error_type.copy_val = copy_val;
-    lg_error_type.is_val = is_val;
-    lg_error_type.ref_val = ref_val;
-    lg_error_type.deref_val = deref_val;
+  lg_type_init(&lg_error_type, lg_str_new("Error"));
+  lg_error_type.copy_val = copy_val;
+  lg_error_type.is_val = is_val;
+  lg_error_type.ref_val = ref_val;
+  lg_error_type.deref_val = deref_val;
 }

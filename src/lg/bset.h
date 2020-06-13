@@ -6,7 +6,7 @@
 #include "lg/cmp.h"
 #include "lg/slab.h"
 
-typedef void *(*lg_bset_key_t)(const void *); 
+typedef const void *(*lg_bset_key_t)(const void *); 
 
 struct lg_bset {
   size_t size;

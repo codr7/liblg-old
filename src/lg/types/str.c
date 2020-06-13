@@ -39,11 +39,11 @@ static bool deref_val(struct lg_val *val) {
 }
 
 void lg_str_type_init() {
-    lg_type_init(&lg_str_type, "Str");
-    lg_str_type.copy_val = copy_val;
-    lg_str_type.clone_val = clone_val;
-    lg_str_type.is_val = is_val;
-    lg_str_type.eq_val = eq_val;
-    lg_str_type.ref_val = ref_val;
-    lg_str_type.deref_val = deref_val;
+  lg_type_init(&lg_str_type, lg_str_new("Str"));
+  lg_str_type.copy_val = copy_val;
+  lg_str_type.clone_val = clone_val;
+  lg_str_type.is_val = is_val;
+  lg_str_type.eq_val = eq_val;
+  lg_str_type.ref_val = ref_val;
+  lg_str_type.deref_val = deref_val;
 }

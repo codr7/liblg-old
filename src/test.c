@@ -2,6 +2,7 @@
 #include "lg/bset.h"
 #include "lg/form.h"
 #include "lg/init.h"
+#include "lg/libs/abc.h"
 #include "lg/op.h"
 #include "lg/parse.h"
 #include "lg/stack.h"
@@ -47,6 +48,13 @@ static void bset_tests() {
   }
 
   lg_bset_deinit(&s);
+}
+
+static void env_tests() {
+  struct lg_vm vm;
+  lg_vm_init(&vm);  
+  lg_add_abc_lib(vm.env);
+  lg_vm_deinit(&vm);
 }
 
 static void eval_tests()  {
@@ -167,6 +175,7 @@ int main() {
   lg_init();
 
   bset_tests();
+  env_tests();
   eval_tests();
   parse_tests();
   stack_tests();
