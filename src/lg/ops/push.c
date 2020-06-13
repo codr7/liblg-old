@@ -3,6 +3,6 @@
 #include "lg/stack.h"
 
 bool lg_push_eval(struct lg_op *op, struct lg_stack *stack) {
-  lg_copy(&op->as_push.val, lg_push(stack));
+  lg_clone(&op->as_push.val, lg_push(stack));
   return true;
 }
