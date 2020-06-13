@@ -63,3 +63,12 @@ struct lg_val *lg_peek(struct lg_stack *stack) {
   return lg_slab_get(is, sizeof(struct lg_val), is->len-1);
 }
 
+bool lg_compile(struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
+  lg_stack_do(in, v) {
+    if (!lg_val_compile(v, out, vm)) {
+      return false;
+    }
+  }
+
+  return true;
+}

@@ -4,8 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+struct lg_block;
 struct lg_str;
 struct lg_val;
+struct lg_vm;
 
 struct lg_type {
   struct lg_str *id;
@@ -16,6 +18,8 @@ struct lg_type {
 
   bool (*is_val)(struct lg_val *x, struct lg_val *y);
   bool (*eq_val)(struct lg_val *x, struct lg_val *y);
+
+  bool (*compile_val)(struct lg_val *in, struct lg_block *out, struct lg_vm *vm);
   
   void (*ref_val)(struct lg_val *);
   bool (*deref_val)(struct lg_val *);

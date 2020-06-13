@@ -1,11 +1,11 @@
-* add lg_compile(lg_vm, lg_stack, lg_block)
-** push bindings
-** add to env tests
+* replace eval stack arg with vm
+** add eval call to compile_tests
+* add lg_form_compile()
+** call from lg_form_type.compile_val
 * add let macro
 ** map name to stack pos
 ** store bindings at bottom of stack
 ** lookup macro in parse_id
-* replace eval stack arg with vm
 * ---
 * change int types to fixed size
 ** int16_t refs

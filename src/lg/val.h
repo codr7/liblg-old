@@ -4,10 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+struct lg_block;
 struct lg_error;
 struct lg_stack;
 struct lg_str;
 struct lg_type;
+struct lg_vm;
 
 struct lg_val {
   struct lg_type *type;
@@ -25,13 +27,15 @@ struct lg_val {
 
 struct lg_val *lg_val_init(struct lg_val *val, struct lg_type *type);
 
+struct lg_val *lg_ref(struct lg_val *val);
+bool lg_deref(struct lg_val *val);
+
 void lg_copy(struct lg_val *src, struct lg_val *dst);
 void lg_clone(struct lg_val *src, struct lg_val *dst);
 
 bool lg_is(struct lg_val *x, struct lg_val *y);
 bool lg_eq(struct lg_val *x, struct lg_val *y);
 
-struct lg_val *lg_ref(struct lg_val *val);
-bool lg_deref(struct lg_val *val);
+bool lg_val_compile(struct lg_val *val, struct lg_block *out, struct lg_vm *vm);
 
 #endif

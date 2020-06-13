@@ -50,6 +50,23 @@ static void bset_tests() {
   lg_bset_deinit(&s);
 }
 
+static void compile_tests() {
+  struct lg_vm vm;
+  lg_vm_init(&vm);  
+
+  struct lg_stack in;
+  lg_stack_init(&in);
+  lg_val_init(lg_push(&in), &lg_int64_type)->as_int64 = 42;
+
+  struct lg_block out;
+  lg_block_init(&out);
+  lg_compile(&in, &out, &vm);
+
+  lg_block_deinit(&out);
+  lg_stack_deinit(&in);
+  lg_vm_deinit(&vm);
+}
+
 static void env_tests() {
   struct lg_vm vm;
   lg_vm_init(&vm);  
@@ -175,6 +192,7 @@ int main() {
   lg_init();
 
   bset_tests();
+  compile_tests();
   env_tests();
   eval_tests();
   parse_tests();
