@@ -9,6 +9,6 @@ struct lg_push {
   struct lg_val val;
 };
 
-bool lg_push_eval(struct lg_op *op, struct lg_stack *stack);
+bool lg_push_eval(struct lg_op *op, struct lg_vm *vm);
 
 #endif

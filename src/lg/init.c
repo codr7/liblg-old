@@ -1,4 +1,5 @@
 #include "lg/init.h"
+#include "lg/pos.h"
 #include "lg/type.h"
 #include "lg/types/bool.h"
 #include "lg/types/error.h"
@@ -9,6 +10,8 @@
 #include "lg/types/str.h"
 
 void lg_init() {
+  lg_pos_init(&LG_NIL_POS, "n/a", -1, -1);
+
   lg_bool_type_init();
   lg_error_type_init();
   lg_form_type_init();
@@ -19,6 +22,8 @@ void lg_init() {
 }
 
 void lg_deinit() {
+  lg_pos_deinit(&LG_NIL_POS);
+  
   lg_type_deinit(&lg_bool_type);
   lg_type_deinit(&lg_error_type);
   lg_type_deinit(&lg_form_type);

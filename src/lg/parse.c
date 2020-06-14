@@ -36,41 +36,41 @@ static const char *skip(const char *in, struct lg_pos *pos) {
   }
 }
 
-const char *lg_parse(struct lg_vm *vm,
-		     const char *in,
+const char *lg_parse(const char *in,
 		     struct lg_pos *pos,
-		     struct lg_stack *out) {
+		     struct lg_stack *out,
+		     struct lg_vm *vm) {
   do {
-    in = lg_parse_form(vm, skip(in, pos), pos, out);
+    in = lg_parse_form(skip(in, pos), pos, out, vm);
   } while (in && *in);
 
   return in;
 }
 
-const char *lg_parse_form(struct lg_vm *vm,
-			  const char *in,
+const char *lg_parse_form(const char *in,
 			  struct lg_pos *pos,
-			  struct lg_stack *out) {
+			  struct lg_stack *out,
+			  struct lg_vm *vm) {
   char c = *in;
 
   switch (c) {
   case 0:
     return in;
   case '(':
-    return lg_parse_group(vm, in, pos, out);
+    return lg_parse_group(in, pos, out, vm);
   }
 
   if (isdigit(c)) {
-    return lg_parse_int(vm, in, pos, out);
+    return lg_parse_int(in, pos, out, vm);
   }
 
-  return lg_parse_id(vm, in, pos, out);
+  return lg_parse_id(in, pos, out, vm);
 }
 
-const char *lg_parse_group(struct lg_vm *vm,
-			   const char *in,
+const char *lg_parse_group(const char *in,
 			   struct lg_pos *pos,
-			   struct lg_stack *out) {
+			   struct lg_stack *out,
+			   struct lg_vm *vm) {
   char c = *in;
 
   if (c != '(') {
@@ -92,17 +92,17 @@ const char *lg_parse_group(struct lg_vm *vm,
       return ++in;
     }
 
-    in = lg_parse_form(vm, in, pos, g);
+    in = lg_parse_form(in, pos, g, vm);
   } while (*in);
 
   lg_error(vm, pos, LG_ESYNTAX, "Open group");
   return NULL;
 }
 
-const char *lg_parse_id(struct lg_vm *vm,
-			const char *in,
+const char *lg_parse_id(const char *in,
 			struct lg_pos *pos,
-			struct lg_stack *out) {
+			struct lg_stack *out,
+			struct lg_vm *vm) {
   const char *start = in;
   struct lg_pos start_pos;
   lg_pos_copy(pos, &start_pos);
@@ -133,10 +133,10 @@ static int char_int(char c, int base) {
   return -1;
 }
 
-const char *lg_parse_int(struct lg_vm *vm,
-			 const char *in,
+const char *lg_parse_int(const char *in,
 			 struct lg_pos *pos,
-			 struct lg_stack *out) {
+			 struct lg_stack *out,
+			 struct lg_vm *vm) {
   int64_t v = 0;
   int base = 10;
 

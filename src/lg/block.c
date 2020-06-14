@@ -22,9 +22,9 @@ struct lg_op *lg_emit(struct lg_block *block, enum lg_op_type type, struct lg_po
   return lg_op_init(lg_slab_push(&block->ops, sizeof(struct lg_op)), type, pos);
 }
 
-void lg_eval(struct lg_op *start, struct lg_stack *stack) {
+void lg_eval(struct lg_op *start, struct lg_vm *vm) {
   for (struct lg_op *op = start; true; op++) {
-    if (!lg_op_eval(op, stack)) {
+    if (!lg_op_eval(op, vm)) {
       break;
     }
   }

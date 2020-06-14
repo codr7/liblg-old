@@ -58,10 +58,19 @@ static void compile_tests() {
   lg_stack_init(&in);
   lg_val_init(lg_push(&in), &lg_int64_type)->as_int64 = 42;
 
+  struct lg_pos pos;
+  lg_pos_init(&pos, "compile_tests", -1, -1);
+
   struct lg_block out;
   lg_block_init(&out);
-  lg_compile(&in, &out, &vm);
+  assert(lg_compile(&in, &out, &vm));
+  lg_emit(&out, LG_STOP, pos);
+  lg_eval(lg_block_start(&out), &vm);
 
+  assert(lg_stack_len(&vm.stack) == 1);
+  assert(lg_peek(&vm.stack)->as_int64 == 42);
+  
+  lg_pos_deinit(&pos);
   lg_block_deinit(&out);
   lg_stack_deinit(&in);
   lg_vm_deinit(&vm);
@@ -86,14 +95,14 @@ static void eval_tests()  {
 
   lg_emit(&block, LG_STOP, pos);
 
-  struct lg_stack stack;
-  lg_stack_init(&stack);
+  struct lg_vm vm;
+  lg_vm_init(&vm);  
 
-  lg_eval(lg_block_start(&block), &stack);
-  assert(lg_stack_len(&stack) == 1);
-  assert(lg_peek(&stack)->as_int64 == 42);
+  lg_eval(lg_block_start(&block), &vm);
+  assert(lg_stack_len(&vm.stack) == 1);
+  assert(lg_peek(&vm.stack)->as_int64 == 42);
   
-  lg_stack_deinit(&stack);
+  lg_vm_deinit(&vm);
   lg_pos_deinit(&pos);
   lg_block_deinit(&block);
 }
@@ -108,7 +117,7 @@ static void parse_tests() {
   struct lg_pos pos;
   lg_pos_init(&pos, "parse_tests", 0, 0);
 
-  assert(!*lg_parse(&vm, "(foo\n42)", &pos, &forms));
+  assert(!*lg_parse("(foo\n42)", &pos, &forms, &vm));
   assert(pos.row == 1);
   assert(pos.col == 3);
 

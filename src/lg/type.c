@@ -16,10 +16,7 @@ static bool eq_val(struct lg_val *x, struct lg_val *y) {
 }
 
 static bool compile_val(struct lg_val *val, struct lg_block *out, struct lg_vm *vm) {
-  struct lg_pos pos;
-  lg_pos_init(&pos, "n/a", -1, -1);
-  lg_copy(val, &lg_emit(out, LG_PUSH, pos)->as_push.val);
-  lg_pos_deinit(&pos);
+  lg_copy(val, &lg_emit(out, LG_PUSH, LG_NIL_POS)->as_push.val);
   return true;
 }
 

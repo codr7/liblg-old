@@ -45,7 +45,11 @@ bool lg_macro_deref(struct lg_macro *macro) {
   return false;
 }
 
-const char *lg_macro_compile(struct lg_macro *macro, struct lg_stack *args, const char *in, struct lg_block *out) {
+const char *lg_macro_call(struct lg_macro *macro,
+			  struct lg_stack *args,
+			  const char *in,
+			  struct lg_block *out,
+			  struct lg_vm *vm) {
   for (uint8_t i = 0; i < macro->nargs - lg_stack_len(args); i++) {
   }
   

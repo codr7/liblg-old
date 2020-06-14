@@ -18,6 +18,6 @@ struct lg_op {
 struct lg_op *lg_op_init(struct lg_op *op, enum lg_op_type type, struct lg_pos pos);
 void lg_op_deinit(struct lg_op *op);
 
-bool lg_op_eval(struct lg_op *op, struct lg_stack *stack);
+bool lg_op_eval(struct lg_op *op, struct lg_vm *vm);
 
 #endif

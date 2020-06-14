@@ -17,7 +17,7 @@
   _lg_block_do(block, op, lg_unique(i))
 
 enum lg_op_type;
-struct lg_stack;
+struct lg_vm;
 
 struct lg_block {
   struct lg_slab ops;
@@ -28,6 +28,6 @@ void lg_block_deinit(struct lg_block *block);
 struct lg_op *lg_block_start(struct lg_block *block);
 
 struct lg_op *lg_emit(struct lg_block *block, enum lg_op_type type, struct lg_pos pos);
-void lg_eval(struct lg_op *start, struct lg_stack *stack);
+void lg_eval(struct lg_op *start, struct lg_vm *vm);
 
 #endif

@@ -6,6 +6,7 @@
 
 struct lg_block;
 struct lg_stack;
+struct lg_vm;
 
 typedef const char *(*lg_macro_imp)(struct lg_stack *args, struct lg_block *out);
 
@@ -28,6 +29,10 @@ void lg_macro_deinit(struct lg_macro *macro);
 struct lg_macro *lg_macro_ref(struct lg_macro *macro);
 bool lg_macro_deref(struct lg_macro *macro);
 
-const char *lg_macro_compile(struct lg_macro *macro, struct lg_stack *args, const char *in, struct lg_block *out);
+const char *lg_macro_call(struct lg_macro *macro,
+			  struct lg_stack *args,
+			  const char *in,
+			  struct lg_block *out,
+			  struct lg_vm *vm);
 
 #endif

@@ -13,6 +13,8 @@ struct lg_pos {
   int16_t row, col;
 };
 
+extern struct lg_pos LG_NIL_POS;
+
 struct lg_pos *lg_pos_init(struct lg_pos *pos, const char *path, int16_t row, int16_t col);
 void lg_pos_deinit(struct lg_pos *pos);
 void lg_pos_copy(struct lg_pos *src, struct lg_pos *dst);

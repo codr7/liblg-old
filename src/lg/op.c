@@ -13,10 +13,10 @@ void lg_op_deinit(struct lg_op *op) {
   lg_pos_deinit(&op->pos);
 }
 
-bool lg_op_eval(struct lg_op *op, struct lg_stack *stack) {
+bool lg_op_eval(struct lg_op *op, struct lg_vm *vm) {
   switch (op->type) {
   case LG_PUSH:
-    return lg_push_eval(op, stack);
+    return lg_push_eval(op, vm);
   case LG_STOP:
     return false;
   default:
