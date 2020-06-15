@@ -27,7 +27,7 @@ struct lg_block *lg_block_init(struct lg_block *block);
 void lg_block_deinit(struct lg_block *block);
 struct lg_op *lg_block_start(struct lg_block *block);
 
-struct lg_op *lg_emit(struct lg_block *block, enum lg_op_type type, struct lg_pos pos);
+struct lg_op *lg_emit(struct lg_block *block, struct lg_pos pos, enum lg_op_type type);
 void lg_eval(struct lg_op *start, struct lg_vm *vm);
 
 #endif

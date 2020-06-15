@@ -14,7 +14,7 @@ static bool is_val(struct lg_val *x, struct lg_val *y) {
 }
 
 static bool compile_val(struct lg_val *val, struct lg_block *out, struct lg_vm *vm) {
-  return lg_form_compile(val->as_form, out, vm);
+  return lg_form_compile(val->as_form, val->pos, out, vm);
 }
 
 static void ref_val(struct lg_val *val) {

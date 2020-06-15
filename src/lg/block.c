@@ -18,8 +18,8 @@ struct lg_op *lg_block_start(struct lg_block *block) {
   return (struct lg_op *)block->ops.slots;
 }
 
-struct lg_op *lg_emit(struct lg_block *block, enum lg_op_type type, struct lg_pos pos) {
-  return lg_op_init(lg_slab_push(&block->ops, sizeof(struct lg_op)), type, pos);
+struct lg_op *lg_emit(struct lg_block *block, struct lg_pos pos, enum lg_op_type type) {
+  return lg_op_init(lg_slab_push(&block->ops, sizeof(struct lg_op)), pos, type);
 }
 
 void lg_eval(struct lg_op *start, struct lg_vm *vm) {

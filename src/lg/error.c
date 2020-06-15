@@ -34,15 +34,15 @@ bool lg_error_deref(struct lg_error *error) {
   return false;
 }
 
-void _lg_error(struct lg_vm *vm,
-	       const char *file, int line,
-	       enum lg_error_type type,
-	       const char *spec, ...) {
+void lg_error(struct lg_vm *vm,
+	      struct lg_pos pos,
+	      enum lg_error_type type,
+	      const char *spec, ...) {
   va_list args;
   va_start(args, spec);
 
   if (vm->debug) {
-    fprintf(stderr, "Error in %s, line %d\n", file, line);
+    fprintf(stderr, "Error in %s, row %d, column %d:\n", pos.path->data, pos.row, pos.col);
     vfprintf(stderr, spec, args);
     abort();
   }
@@ -53,7 +53,7 @@ void _lg_error(struct lg_vm *vm,
   va_end(len_args);
 
   if (len < 0) {
-    fprintf(stderr, "Error in %s, line %d\n", file, line);
+    fprintf(stderr, "Error in %s, row %d, column %d:\n", pos.path->data, pos.row, pos.col);
     fputs(spec, stderr);
     fputc('\n', stderr);
     abort();
@@ -63,5 +63,5 @@ void _lg_error(struct lg_vm *vm,
   char *message = malloc(len);
   vsnprintf(message, len, spec, args);
   va_end(args);
-  lg_val_init(lg_push(&vm->errors), &lg_error_type)->as_error = lg_error_new(type, message);
+  lg_val_init(lg_push(&vm->errors), pos, &lg_error_type)->as_error = lg_error_new(type, message);
 }

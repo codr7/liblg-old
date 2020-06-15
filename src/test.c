@@ -56,21 +56,17 @@ static void compile_tests() {
 
   struct lg_stack in;
   lg_stack_init(&in, NULL);
-  lg_val_init(lg_push(&in), &lg_int64_type)->as_int64 = 42;
-
-  struct lg_pos pos;
-  lg_pos_init(&pos, "compile_tests", -1, -1);
+  lg_val_init(lg_push(&in), LG_NIL_POS, &lg_int64_type)->as_int64 = 42;
 
   struct lg_block out;
   lg_block_init(&out);
   assert(lg_compile(&in, &out, &vm));
-  lg_emit(&out, LG_STOP, pos);
+  lg_emit(&out, LG_NIL_POS, LG_STOP);
   lg_eval(lg_block_start(&out), &vm);
 
   assert(lg_stack_len(vm.stack) == 1);
   assert(lg_peek(vm.stack)->as_int64 == 42);
   
-  lg_pos_deinit(&pos);
   lg_block_deinit(&out);
   lg_stack_deinit(&in);
   lg_vm_deinit(&vm);
@@ -87,13 +83,10 @@ static void eval_tests()  {
   struct lg_block block;
   lg_block_init(&block);
 
-  struct lg_pos pos;
-  lg_pos_init(&pos, "eval_tests", -1, -1);
-
-  struct lg_val *v = lg_val_init(&lg_emit(&block, LG_PUSH, pos)->as_push.val, &lg_int64_type);
+  struct lg_val *v = lg_val_init(&lg_emit(&block, LG_NIL_POS, LG_PUSH)->as_push.val, LG_NIL_POS, &lg_int64_type);
   v->as_int64 = 42;
 
-  lg_emit(&block, LG_STOP, pos);
+  lg_emit(&block, LG_NIL_POS, LG_STOP);
 
   struct lg_vm vm;
   lg_vm_init(&vm);  
@@ -103,7 +96,6 @@ static void eval_tests()  {
   assert(lg_peek(vm.stack)->as_int64 == 42);
   
   lg_vm_deinit(&vm);
-  lg_pos_deinit(&pos);
   lg_block_deinit(&block);
 }
 
@@ -147,7 +139,7 @@ static void stack_tests() {
   lg_stack_init(&s, NULL);
   
   for (int64_t i = 0; i < MAX; i++) {
-    lg_val_init(lg_push(&s), &lg_int64_type)->as_int64 = i;
+    lg_val_init(lg_push(&s), LG_NIL_POS, &lg_int64_type)->as_int64 = i;
   }
 
   assert(lg_stack_len(&s) == MAX);
@@ -156,6 +148,7 @@ static void stack_tests() {
     struct lg_val *v = lg_pop(&s);
     assert(v->type == &lg_int64_type);
     assert(v->as_int64 == MAX-i-1);
+    lg_deref(v);
   }
 
   lg_stack_deinit(&s);
@@ -173,25 +166,25 @@ static void test_val(struct lg_val *v) {
 
 static void val_tests() {
   struct lg_val v;
-  lg_val_init(&v, &lg_bool_type)->as_bool = true;
+  lg_val_init(&v, LG_NIL_POS, &lg_bool_type)->as_bool = true;
   test_val(&v);
   lg_deref(&v);
 
-  lg_val_init(&v, &lg_int64_type)->as_int64 = 42;
+  lg_val_init(&v, LG_NIL_POS, &lg_int64_type)->as_int64 = 42;
   test_val(&v);
   lg_deref(&v);
   
-  lg_val_init(&v, &lg_meta_type)->as_meta = &lg_int64_type;
+  lg_val_init(&v, LG_NIL_POS, &lg_meta_type)->as_meta = &lg_int64_type;
   test_val(&v);
   lg_deref(&v);
 
   struct lg_stack *stack = lg_stack_new(NULL);
-  lg_val_init(&v, &lg_stack_type)->as_stack = stack;
-  lg_val_init(lg_push(stack), &lg_str_type)->as_str = lg_str("foo"); 
+  lg_val_init(&v, LG_NIL_POS, &lg_stack_type)->as_stack = stack;
+  lg_val_init(lg_push(stack), LG_NIL_POS, &lg_str_type)->as_str = lg_str("foo"); 
   test_val(&v);
   lg_deref(&v);
 
-  lg_val_init(&v, &lg_str_type)->as_str = lg_str("foo");
+  lg_val_init(&v, LG_NIL_POS, &lg_str_type)->as_str = lg_str("foo");
   test_val(&v);
   assert(v.as_str->len == 3);
   lg_deref(&v);  

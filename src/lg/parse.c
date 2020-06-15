@@ -11,9 +11,9 @@
 #include "lg/val.h"
 #include "lg/util.h"
 
-static struct lg_form *push_form(struct lg_stack *out, struct lg_pos pos, enum lg_form_type type) {
-  struct lg_val *v = lg_val_init(lg_push(out), &lg_form_type);
-  struct lg_form *f = lg_form_new(pos, type);
+static struct lg_form *push_form(struct lg_pos pos, enum lg_form_type type, struct lg_stack *out) {
+  struct lg_val *v = lg_val_init(lg_push(out), pos, &lg_form_type);
+  struct lg_form *f = lg_form_new(type);
   v->as_form = f;
   return f;
 }
@@ -74,11 +74,11 @@ const char *lg_parse_group(const char *in,
   char c = *in;
 
   if (c != '(') {
-    lg_error(vm, pos, LG_ESYNTAX, "Invalid group: %c (%d)", c, (int)c);
+    lg_error(vm, *pos, LG_ESYNTAX, "Invalid group: %c (%d)", c, (int)c);
     return NULL;
   }
 
-  struct lg_stack *g = &push_form(out, *pos, LG_GROUP)->as_group;
+  struct lg_stack *g = &push_form(*pos, LG_GROUP, out)->as_group;
   lg_stack_init(g, NULL);
   
   in++;
@@ -95,7 +95,7 @@ const char *lg_parse_group(const char *in,
     in = lg_parse_form(in, pos, g, vm);
   } while (*in);
 
-  lg_error(vm, pos, LG_ESYNTAX, "Open group");
+  lg_error(vm, *pos, LG_ESYNTAX, "Open group");
   return NULL;
 }
 
@@ -116,7 +116,7 @@ const char *lg_parse_id(const char *in,
   char name[l + 1];
   name[l] = 0;
   strncpy(name, start, l);
-  lg_str_init(&push_form(out, start_pos, LG_ID)->as_id, name);
+  lg_str_init(&push_form(start_pos, LG_ID, out)->as_id, name);
   lg_pos_deinit(&start_pos);
   return in;
 }
@@ -171,6 +171,6 @@ const char *lg_parse_int(const char *in,
     pos->col++;
   }
 
-  lg_val_init(lg_push(out), &lg_int64_type)->as_int64 = v;
+  lg_val_init(lg_push(out), *pos, &lg_int64_type)->as_int64 = v;
   return in;
 }

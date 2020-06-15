@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "lg/pos.h"
+
 struct lg_block;
 struct lg_error;
 struct lg_stack;
@@ -12,6 +14,7 @@ struct lg_type;
 struct lg_vm;
 
 struct lg_val {
+  struct lg_pos pos;
   struct lg_type *type;
   
   union {
@@ -25,7 +28,7 @@ struct lg_val {
   };
 };
 
-struct lg_val *lg_val_init(struct lg_val *val, struct lg_type *type);
+struct lg_val *lg_val_init(struct lg_val *val, struct lg_pos pos, struct lg_type *type);
 
 struct lg_val *lg_ref(struct lg_val *val);
 bool lg_deref(struct lg_val *val);

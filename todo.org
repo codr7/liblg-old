@@ -2,6 +2,8 @@
 ** add macro type
 ** register or/and-macros in abc lib
 * add repl
+** add lg_type.dump_val
+*** libcodr7/stream
 ** cfoo
 * ---
 * add let macro

@@ -10,14 +10,15 @@
 #include "lg/types/str.h"
 
 void lg_add_abc_lib(struct lg_env *env) {
-  lg_add_type(env, &lg_bool_type);
-  lg_add_type(env, &lg_error_type);
-  lg_add_type(env, &lg_form_type);
-  lg_add_type(env, &lg_int64_type);
-  lg_add_type(env, &lg_meta_type);
-  lg_add_type(env, &lg_stack_type);
-  lg_add_type(env, &lg_str_type);
+  struct lg_pos p = LG_NIL_POS;
+  lg_add_type(env, p, &lg_bool_type);
+  lg_add_type(env, p, &lg_error_type);
+  lg_add_type(env, p, &lg_form_type);
+  lg_add_type(env, p, &lg_int64_type);
+  lg_add_type(env, p, &lg_meta_type);
+  lg_add_type(env, p, &lg_stack_type);
+  lg_add_type(env, p, &lg_str_type);
 
-  lg_add(env, lg_str("T"), &lg_bool_type)->as_bool = true;
-  lg_add(env, lg_str("F"), &lg_bool_type)->as_bool = false;
+  lg_add(env, p, lg_str("T"), &lg_bool_type)->as_bool = true;
+  lg_add(env, p, lg_str("F"), &lg_bool_type)->as_bool = false;
 }

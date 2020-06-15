@@ -5,13 +5,21 @@
 #include "lg/stack.h"
 #include "lg/vm.h"
 
-struct lg_op *lg_op_init(struct lg_op *op, enum lg_op_type type, struct lg_pos pos) {
-  op->type = type;
+struct lg_op *lg_op_init(struct lg_op *op, struct lg_pos pos, enum lg_op_type type) {
   lg_pos_copy(&pos, &op->pos);
+  op->type = type;
   return op;
 }
 
 void lg_op_deinit(struct lg_op *op) {
+  switch (op->type) {
+  case LG_PUSH:
+    lg_push_deinit(op);
+    break;
+  default:
+    break;
+  }
+
   lg_pos_deinit(&op->pos);
 }
 

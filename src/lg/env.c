@@ -41,7 +41,7 @@ void lg_env_deinit(struct lg_env *env) {
   lg_bset_deinit(&env->bindings);
 }
 
-struct lg_val *lg_add(struct lg_env *env, struct lg_str *key, struct lg_type *type) {
+struct lg_val *lg_add(struct lg_env *env, struct lg_pos pos, struct lg_str *key, struct lg_type *type) {
   struct lg_binding *b = lg_bset_add(&env->bindings, key);
 
   if (b == NULL) {
@@ -49,11 +49,11 @@ struct lg_val *lg_add(struct lg_env *env, struct lg_str *key, struct lg_type *ty
   }
 
   b->key = key;
-  return lg_val_init(&b->val, type);
+  return lg_val_init(&b->val, pos, type);
 }
 
-void lg_add_type(struct lg_env *env, struct lg_type *type) {
-  lg_add(env, lg_str_ref(type->id), &lg_meta_type)->as_meta = lg_type_ref(type);
+void lg_add_type(struct lg_env *env, struct lg_pos pos, struct lg_type *type) {
+  lg_add(env, pos, lg_str_ref(type->id), &lg_meta_type)->as_meta = lg_type_ref(type);
 }
 
 struct lg_val *lg_env_get(struct lg_env *env, struct lg_str *id) {

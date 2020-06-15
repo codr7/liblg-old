@@ -7,15 +7,15 @@
 enum lg_op_type {LG_POP_STACK, LG_PUSH, LG_PUSH_STACK, LG_STOP};
 
 struct lg_op {
-  enum lg_op_type type;
   struct lg_pos pos;
+  enum lg_op_type type;
   
   union {
     struct lg_push as_push;
   };
 };
 
-struct lg_op *lg_op_init(struct lg_op *op, enum lg_op_type type, struct lg_pos pos);
+struct lg_op *lg_op_init(struct lg_op *op, struct lg_pos pos, enum lg_op_type type);
 void lg_op_deinit(struct lg_op *op);
 
 bool lg_op_eval(struct lg_op *op, struct lg_vm *vm);
