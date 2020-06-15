@@ -79,7 +79,7 @@ const char *lg_parse_group(const char *in,
   }
 
   struct lg_stack *g = &push_form(out, *pos, LG_GROUP)->as_group;
-  lg_stack_init(g);
+  lg_stack_init(g, NULL);
   
   in++;
   pos->col++;
@@ -116,7 +116,7 @@ const char *lg_parse_id(const char *in,
   char name[l + 1];
   name[l] = 0;
   strncpy(name, start, l);
-  push_form(out, start_pos, LG_ID)->as_id = lg_strdup(name, NULL);
+  lg_str_init(&push_form(out, start_pos, LG_ID)->as_id, name);
   lg_pos_deinit(&start_pos);
   return in;
 }

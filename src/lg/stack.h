@@ -17,12 +17,13 @@
   _lg_stack_do(stack, item, lg_unique(i))
 
 struct lg_stack {
+  struct lg_stack *parent;
   struct lg_slab items;
   int refs;
 };
 
-struct lg_stack *lg_stack_new();
-struct lg_stack *lg_stack_init(struct lg_stack *stack);
+struct lg_stack *lg_stack_new(struct lg_stack *parent);
+struct lg_stack *lg_stack_init(struct lg_stack *stack, struct lg_stack *parent);
 void lg_stack_deinit(struct lg_stack *stack);
 
 struct lg_stack *lg_stack_ref(struct lg_stack *stack);

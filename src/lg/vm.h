@@ -10,7 +10,7 @@ struct lg_vm {
   bool debug;
   struct lg_env root_env;
   struct lg_env *env;
-  struct lg_stack stack;
+  struct lg_stack *stack;
   struct lg_stack errors;
 };
 

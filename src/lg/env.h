@@ -31,10 +31,12 @@ struct lg_env *lg_env_new(struct lg_env *parent);
 struct lg_env *lg_env_init(struct lg_env *env, struct lg_env *parent);
 void lg_env_deinit(struct lg_env *env);
 
-struct lg_env *lg_env_ref(struct lg_env *env);
-bool lg_env_deref(struct lg_env *env);
-
 struct lg_val *lg_env_add(struct lg_env *env, struct lg_str *key, struct lg_type *type);
 void lg_add_type(struct lg_env *env, struct lg_type *type);
+
+struct lg_val *lg_env_get(struct lg_env *env, struct lg_str *id);
+
+struct lg_env *lg_env_ref(struct lg_env *env);
+bool lg_env_deref(struct lg_env *env);
 
 #endif

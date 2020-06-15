@@ -41,21 +41,6 @@ void lg_env_deinit(struct lg_env *env) {
   lg_bset_deinit(&env->bindings);
 }
 
-struct lg_env *lg_env_ref(struct lg_env *env) {
-  env->refs++;
-  return env;
-}
-
-bool lg_env_deref(struct lg_env *env) {
-  if (!--env->refs) {
-    lg_env_deinit(env);
-    free(env);
-    return true;
-  }
-
-  return false;
-}
-
 struct lg_val *lg_env_add(struct lg_env *env, struct lg_str *key, struct lg_type *type) {
   struct lg_binding *b = lg_bset_add(&env->bindings, key);
 
@@ -69,4 +54,24 @@ struct lg_val *lg_env_add(struct lg_env *env, struct lg_str *key, struct lg_type
 
 void lg_add_type(struct lg_env *env, struct lg_type *type) {
   lg_env_add(env, lg_str_ref(type->id), &lg_meta_type)->as_meta = lg_type_ref(type);
+}
+
+struct lg_val *lg_env_get(struct lg_env *env, struct lg_str *id) {
+  struct lg_binding *b = lg_bset_get(&env->bindings, id);
+  return b ? &b->val : NULL;
+}
+
+struct lg_env *lg_env_ref(struct lg_env *env) {
+  env->refs++;
+  return env;
+}
+
+bool lg_env_deref(struct lg_env *env) {
+  if (!--env->refs) {
+    lg_env_deinit(env);
+    free(env);
+    return true;
+  }
+
+  return false;
 }

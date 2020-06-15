@@ -2,17 +2,23 @@
 
 #include "lg/stack.h"
 
-struct lg_stack *lg_stack_new() {
-  return lg_stack_init(malloc(sizeof(struct lg_stack)));
+struct lg_stack *lg_stack_new(struct lg_stack *parent) {
+  return lg_stack_init(malloc(sizeof(struct lg_stack)), parent);
 }
 
-struct lg_stack *lg_stack_init(struct lg_stack *stack) {
+struct lg_stack *lg_stack_init(struct lg_stack *stack, struct lg_stack *parent) {
+  stack->parent = parent ? lg_stack_ref(parent) : NULL;
+
   lg_slab_init(&stack->items);
   stack->refs = 1;
   return stack;
 }
 
 void lg_stack_deinit(struct lg_stack *stack) {
+  if (stack->parent) {
+    lg_stack_deref(stack->parent);
+  }
+
   for (size_t i = 0; i < stack->items.len; i++) {
     lg_deref(lg_slab_get(&stack->items, sizeof(struct lg_val), i));
   }

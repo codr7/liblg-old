@@ -55,7 +55,7 @@ static void compile_tests() {
   lg_vm_init(&vm);  
 
   struct lg_stack in;
-  lg_stack_init(&in);
+  lg_stack_init(&in, NULL);
   lg_val_init(lg_push(&in), &lg_int64_type)->as_int64 = 42;
 
   struct lg_pos pos;
@@ -67,8 +67,8 @@ static void compile_tests() {
   lg_emit(&out, LG_STOP, pos);
   lg_eval(lg_block_start(&out), &vm);
 
-  assert(lg_stack_len(&vm.stack) == 1);
-  assert(lg_peek(&vm.stack)->as_int64 == 42);
+  assert(lg_stack_len(vm.stack) == 1);
+  assert(lg_peek(vm.stack)->as_int64 == 42);
   
   lg_pos_deinit(&pos);
   lg_block_deinit(&out);
@@ -99,8 +99,8 @@ static void eval_tests()  {
   lg_vm_init(&vm);  
 
   lg_eval(lg_block_start(&block), &vm);
-  assert(lg_stack_len(&vm.stack) == 1);
-  assert(lg_peek(&vm.stack)->as_int64 == 42);
+  assert(lg_stack_len(vm.stack) == 1);
+  assert(lg_peek(vm.stack)->as_int64 == 42);
   
   lg_vm_deinit(&vm);
   lg_pos_deinit(&pos);
@@ -112,7 +112,7 @@ static void parse_tests() {
   lg_vm_init(&vm);  
   
   struct lg_stack forms;
-  lg_stack_init(&forms);
+  lg_stack_init(&forms, NULL);
 
   struct lg_pos pos;
   lg_pos_init(&pos, "parse_tests", 0, 0);
@@ -132,7 +132,7 @@ static void parse_tests() {
   
   struct lg_val *f1 = lg_pop(group);
   assert(f1->type == &lg_form_type);
-  assert(strcmp(f1->as_form->as_id, "foo") == 0);
+  assert(strcmp(f1->as_form->as_id.data, "foo") == 0);
   lg_deref(f1);
 
   lg_pos_deinit(&pos);
@@ -144,7 +144,7 @@ static void stack_tests() {
   const int64_t MAX = 10000;
   
   struct lg_stack s;
-  lg_stack_init(&s);
+  lg_stack_init(&s, NULL);
   
   for (int64_t i = 0; i < MAX; i++) {
     lg_val_init(lg_push(&s), &lg_int64_type)->as_int64 = i;
@@ -185,7 +185,7 @@ static void val_tests() {
   test_val(&v);
   lg_deref(&v);
 
-  struct lg_stack *stack = lg_stack_new();
+  struct lg_stack *stack = lg_stack_new(NULL);
   lg_val_init(&v, &lg_stack_type)->as_stack = stack;
   lg_val_init(lg_push(stack), &lg_str_type)->as_str = lg_str_new("foo"); 
   test_val(&v);

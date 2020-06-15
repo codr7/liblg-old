@@ -14,7 +14,7 @@ static void copy_val(struct lg_val *src, struct lg_val *dst) {
 }
 
 static void clone_val(struct lg_val *src, struct lg_val *dst) {
-  struct lg_stack *ss = src->as_stack, *ds = lg_stack_new();
+  struct lg_stack *ss = src->as_stack, *ds = lg_stack_new(NULL);
   dst->as_stack = ds;
   const size_t len = lg_stack_len(ss);
   lg_stack_grow(ds, len);

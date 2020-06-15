@@ -1,5 +1,3 @@
-* add lg_form_compile()
-** call from lg_form_type.compile_val
 * parse remaining args in macro_compile
 * lookup/call macros in parse_id
 * add let macro

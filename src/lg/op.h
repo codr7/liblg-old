@@ -4,7 +4,7 @@
 #include "lg/ops/push.h"
 #include "lg/pos.h"
 
-enum lg_op_type {LG_PUSH, LG_STOP};
+enum lg_op_type {LG_POP_STACK, LG_PUSH, LG_PUSH_STACK, LG_STOP};
 
 struct lg_op {
   enum lg_op_type type;
