@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 struct lg_block;
+struct lg_pos;
 struct lg_stack;
 struct lg_vm;
 
@@ -30,6 +31,7 @@ struct lg_macro *lg_macro_ref(struct lg_macro *macro);
 bool lg_macro_deref(struct lg_macro *macro);
 
 const char *lg_macro_call(struct lg_macro *macro,
+			  struct lg_pos *pos,
 			  struct lg_stack *args,
 			  const char *in,
 			  struct lg_block *out,

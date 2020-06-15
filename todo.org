@@ -1,5 +1,9 @@
 * parse remaining args in macro_compile
 * lookup/call macros in parse_id
+** add macro type
+** register or-macro
+* add repl
+** cfoo
 * add let macro
 ** map name to stack pos
 ** store bindings at bottom of stack

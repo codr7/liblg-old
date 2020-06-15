@@ -1,4 +1,7 @@
+#include "lg/error.h"
 #include "lg/macro.h"
+#include "lg/parse.h"
+#include "lg/pos.h"
 #include "lg/stack.h"
 #include "lg/util.h"
 
@@ -46,11 +49,16 @@ bool lg_macro_deref(struct lg_macro *macro) {
 }
 
 const char *lg_macro_call(struct lg_macro *macro,
+			  struct lg_pos *pos,
 			  struct lg_stack *args,
 			  const char *in,
 			  struct lg_block *out,
 			  struct lg_vm *vm) {
   for (uint8_t i = 0; i < macro->nargs - lg_stack_len(args); i++) {
+    if (!lg_parse_form(in, pos, args, vm)) {
+      lg_error(vm, pos, LG_ESYNTAX, "%s takes %d arguments, %d given", macro->id, macro->nargs, lg_stack_len(args));
+      return NULL;
+    }
   }
   
   return macro->imp(args, out);
