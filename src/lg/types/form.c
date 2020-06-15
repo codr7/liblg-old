@@ -26,7 +26,7 @@ static bool deref_val(struct lg_val *val) {
 }
 
 void lg_form_type_init() {
-    lg_type_init(&lg_form_type, lg_str_new("Form"));
+    lg_type_init(&lg_form_type, lg_str("Form"));
     lg_form_type.copy_val = copy_val;
     lg_form_type.is_val = is_val;
     lg_form_type.compile_val = compile_val;

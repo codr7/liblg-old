@@ -53,7 +53,7 @@ static bool deref_val(struct lg_val *val) {
 }
 
 void lg_stack_type_init() {
-  lg_type_init(&lg_stack_type, lg_str_new("Stack"));
+  lg_type_init(&lg_stack_type, lg_str("Stack"));
   lg_stack_type.copy_val = copy_val;
   lg_stack_type.clone_val = clone_val;
   lg_stack_type.is_val = is_val;

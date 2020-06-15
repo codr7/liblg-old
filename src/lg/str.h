@@ -11,7 +11,7 @@ struct lg_str {
   int16_t refs;
 };
 
-struct lg_str *lg_str_new(const char *data);
+struct lg_str *lg_str(const char *data);
 struct lg_str *lg_str_init(struct lg_str *str, const char *data);
 void lg_str_deinit(struct lg_str *str);
 struct lg_str *lg_str_ref(struct lg_str *str);

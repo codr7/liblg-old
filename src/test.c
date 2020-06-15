@@ -187,11 +187,11 @@ static void val_tests() {
 
   struct lg_stack *stack = lg_stack_new(NULL);
   lg_val_init(&v, &lg_stack_type)->as_stack = stack;
-  lg_val_init(lg_push(stack), &lg_str_type)->as_str = lg_str_new("foo"); 
+  lg_val_init(lg_push(stack), &lg_str_type)->as_str = lg_str("foo"); 
   test_val(&v);
   lg_deref(&v);
 
-  lg_val_init(&v, &lg_str_type)->as_str = lg_str_new("foo");
+  lg_val_init(&v, &lg_str_type)->as_str = lg_str("foo");
   test_val(&v);
   assert(v.as_str->len == 3);
   lg_deref(&v);  

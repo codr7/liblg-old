@@ -3,7 +3,7 @@
 #include "lg/str.h"
 #include "lg/util.h"
 
-struct lg_str *lg_str_new(const char *data) {
+struct lg_str *lg_str(const char *data) {
   return lg_str_init(malloc(sizeof(struct lg_str)), data);
 }
 

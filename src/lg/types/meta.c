@@ -22,7 +22,7 @@ static bool deref_val(struct lg_val *val) {
 }
 
 void lg_meta_type_init() {
-    lg_type_init(&lg_meta_type, lg_str_new("Meta"));
+    lg_type_init(&lg_meta_type, lg_str("Meta"));
     lg_meta_type.copy_val = copy_val;
     lg_meta_type.is_val = is_val;
     lg_meta_type.ref_val = ref_val;

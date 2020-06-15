@@ -14,7 +14,7 @@ static bool is_val(struct lg_val *x, struct lg_val *y) {
 }
 
 void lg_int64_type_init() {
-  lg_type_init(&lg_int64_type, lg_str_new("Int64"));
+  lg_type_init(&lg_int64_type, lg_str("Int64"));
   lg_int64_type.copy_val = copy_val;
   lg_int64_type.is_val = is_val;
 }
