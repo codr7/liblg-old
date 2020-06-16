@@ -50,8 +50,8 @@ bool lg_eq(struct lg_val *x, struct lg_val *y) {
   return t == y->type && t->eq_val(x, y);
 }
 
-bool lg_val_compile(struct lg_val *val, struct lg_block *out, struct lg_vm *vm) {
+bool lg_val_compile(struct lg_val *val, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
   struct lg_type *t = val->type;
   assert(t->compile_val);
-  return t->compile_val(val, out, vm);
+  return t->compile_val(val, in, out, vm);
 }

@@ -9,7 +9,7 @@ struct lg_push {
   struct lg_val val;
 };
 
-bool lg_push_eval(struct lg_op *op, struct lg_vm *vm);
+struct lg_op *lg_push_eval(struct lg_op *op, struct lg_vm *vm);
 void lg_push_deinit(struct lg_op *op);
 
 #endif

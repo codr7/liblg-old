@@ -5,6 +5,7 @@
 #include "lg/types/error.h"
 #include "lg/types/form.h"
 #include "lg/types/int64.h"
+#include "lg/types/macro.h"
 #include "lg/types/meta.h"
 #include "lg/types/stack.h"
 #include "lg/types/str.h"
@@ -16,6 +17,7 @@ void lg_init() {
   lg_error_type_init();
   lg_form_type_init();
   lg_int64_type_init();
+  lg_macro_type_init();
   lg_meta_type_init();
   lg_stack_type_init();
   lg_str_type_init();
@@ -28,6 +30,7 @@ void lg_deinit() {
   lg_type_deinit(&lg_error_type);
   lg_type_deinit(&lg_form_type);
   lg_type_deinit(&lg_int64_type);
+  lg_type_deinit(&lg_macro_type);
   lg_type_deinit(&lg_meta_type);
   lg_type_deinit(&lg_stack_type);
   lg_type_deinit(&lg_str_type);

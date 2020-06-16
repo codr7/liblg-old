@@ -3,9 +3,6 @@
 
 #include <inttypes.h>
 
-#define LG_MIN_ROW 1
-#define LG_MIN_COL 0
-
 struct lg_str;
 
 struct lg_pos {

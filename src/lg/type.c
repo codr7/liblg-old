@@ -15,7 +15,7 @@ static bool eq_val(struct lg_val *x, struct lg_val *y) {
   return x->type->is_val(x, y);
 }
 
-static bool compile_val(struct lg_val *val, struct lg_block *out, struct lg_vm *vm) {
+static bool compile_val(struct lg_val *val, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
   lg_copy(val, &lg_emit(out, val->pos, LG_PUSH)->as_push.val);
   return true;
 }

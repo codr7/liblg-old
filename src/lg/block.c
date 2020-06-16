@@ -18,14 +18,26 @@ struct lg_op *lg_block_start(struct lg_block *block) {
   return (struct lg_op *)block->ops.slots;
 }
 
+size_t lg_block_len(struct lg_block *block) {
+  return block->ops.len;
+}
+
+void lg_block_reverse(struct lg_block *block, size_t offs) {
+  for (struct lg_op
+	 *i = (struct lg_op *)block->ops.slots + offs,
+	 *j = (struct lg_op *)block->ops.slots + lg_block_len(block) - 1;
+       i < j;
+       i++, j--) {
+    struct lg_op tmp = *i;
+    *i = *j;
+    *j = tmp;
+  }
+}
+
 struct lg_op *lg_emit(struct lg_block *block, struct lg_pos pos, enum lg_op_type type) {
   return lg_op_init(lg_slab_push(&block->ops, sizeof(struct lg_op)), pos, type);
 }
 
 void lg_eval(struct lg_op *start, struct lg_vm *vm) {
-  for (struct lg_op *op = start; true; op++) {
-    if (!lg_op_eval(op, vm)) {
-      break;
-    }
-  }
+  for (struct lg_op *op = start; op; op = lg_op_eval(op, vm));
 }

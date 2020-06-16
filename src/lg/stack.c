@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "lg/block.h"
 #include "lg/stack.h"
 
 struct lg_stack *lg_stack_new(struct lg_stack *parent) {
@@ -70,11 +71,18 @@ struct lg_val *lg_peek(struct lg_stack *stack) {
 }
 
 bool lg_compile(struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
-  lg_stack_do(in, v) {
-    if (!lg_val_compile(v, out, vm)) {
+  size_t nops = lg_block_len(out);
+  
+  while (lg_stack_len(in)) {
+    struct lg_val *v = lg_pop(in);
+
+    if (!lg_val_compile(v, in, out, vm)) {
       return false;
     }
+
+    lg_deref(v);
   }
 
+  lg_block_reverse(out, nops);
   return true;
 }

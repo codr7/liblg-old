@@ -13,8 +13,8 @@ static bool is_val(struct lg_val *x, struct lg_val *y) {
   return x->as_form == y->as_form;
 }
 
-static bool compile_val(struct lg_val *val, struct lg_block *out, struct lg_vm *vm) {
-  return lg_form_compile(val->as_form, val->pos, out, vm);
+static bool compile_val(struct lg_val *val, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
+  return lg_form_compile(val->as_form, val->pos, in, out, vm);
 }
 
 static void ref_val(struct lg_val *val) {

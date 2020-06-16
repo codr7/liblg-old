@@ -23,8 +23,10 @@ void lg_op_deinit(struct lg_op *op) {
   lg_pos_deinit(&op->pos);
 }
 
-bool lg_op_eval(struct lg_op *op, struct lg_vm *vm) {
+struct lg_op *lg_op_eval(struct lg_op *op, struct lg_vm *vm) {
   switch (op->type) {
+  case LG_OR:
+    return lg_or_eval(op, vm);
   case LG_POP_STACK:
     lg_stack_deref(vm->stack);
     vm->stack = vm->stack->parent;
@@ -35,12 +37,12 @@ bool lg_op_eval(struct lg_op *op, struct lg_vm *vm) {
     vm->stack = lg_stack_new(vm->stack);
     break;
   case LG_STOP:
-    return false;
+    return NULL;
   default:
     fprintf(stderr, "Eval not implemented for op type: %d", op->type);
     abort();
   }
 
-  return true;
+  return op + 1;
 }
 

@@ -1,6 +1,8 @@
-* lookup/call macros in parse_id
-** add macro type
-** register or/and-macros in abc lib
+* add lg_type.true_val
+** default true
+** false for empty stacks, strings, 0 & F
+** use in lg_or op
+* add and-op
 * add repl
 ** add lg_type.dump_val
 *** libcodr7/stream

@@ -2,8 +2,10 @@
 #include <string.h>
 
 #include "lg/env.h"
+#include "lg/macro.h"
 #include "lg/str.h"
 #include "lg/type.h"
+#include "lg/types/macro.h"
 #include "lg/types/meta.h"
 
 struct lg_env *lg_env_new(struct lg_env *parent) {
@@ -52,11 +54,19 @@ struct lg_val *lg_add(struct lg_env *env, struct lg_pos pos, struct lg_str *key,
   return lg_val_init(&b->val, pos, type);
 }
 
+void lg_add_macro(struct lg_env *env,
+		  struct lg_pos pos,
+		  struct lg_str *id,
+		  uint8_t nargs,
+		  lg_macro_imp imp) {
+  lg_add(env, pos, id, &lg_macro_type)->as_macro = lg_macro_new(id, nargs, imp);
+}
+
 void lg_add_type(struct lg_env *env, struct lg_pos pos, struct lg_type *type) {
   lg_add(env, pos, lg_str_ref(type->id), &lg_meta_type)->as_meta = lg_type_ref(type);
 }
 
-struct lg_val *lg_env_get(struct lg_env *env, struct lg_str *id) {
+struct lg_val *lg_get(struct lg_env *env, struct lg_str *id) {
   struct lg_binding *b = lg_bset_get(&env->bindings, id);
   return b ? &b->val : NULL;
 }

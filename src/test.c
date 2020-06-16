@@ -99,6 +99,37 @@ static void eval_tests()  {
   lg_block_deinit(&block);
 }
 
+static void macro_tests()  {
+  struct lg_vm vm;
+  lg_vm_init(&vm);  
+  lg_add_abc_lib(vm.env);
+
+  struct lg_stack in;
+  lg_stack_init(&in, NULL);
+
+  struct lg_pos pos;
+  lg_pos_init(&pos, "macro_tests", 0, 0);
+
+  lg_parse(&pos, "F or T", &in, &vm);
+
+  struct lg_block out;
+  lg_block_init(&out);
+
+  lg_compile(&in, &out, &vm);
+  lg_emit(&out, pos, LG_STOP);
+  lg_eval(lg_block_start(&out), &vm);
+  
+  assert(lg_stack_len(vm.stack) == 1);
+  struct lg_val *v = lg_peek(vm.stack);
+  assert(v->type == &lg_bool_type);
+  assert(v->as_bool);
+
+  lg_pos_deinit(&pos);
+  lg_stack_deinit(&in);
+  lg_block_deinit(&out);
+  lg_vm_deinit(&vm);
+}
+
 static void parse_tests() {
   struct lg_vm vm;
   lg_vm_init(&vm);  
@@ -109,7 +140,7 @@ static void parse_tests() {
   struct lg_pos pos;
   lg_pos_init(&pos, "parse_tests", 0, 0);
 
-  assert(!*lg_parse("(foo\n42)", &pos, &forms, &vm));
+  assert(!*lg_parse(&pos, "(foo\n42)", &forms, &vm));
   assert(pos.row == 1);
   assert(pos.col == 3);
 
@@ -197,6 +228,7 @@ int main() {
   compile_tests();
   env_tests();
   eval_tests();
+  macro_tests();
   parse_tests();
   stack_tests();
   val_tests();
