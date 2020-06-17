@@ -1,6 +1,3 @@
-* finish repl
-** debug without valgrind
-** commit
 * add lg_type.true_val
 ** default true
 ** false for empty stacks, strings, 0 & F
