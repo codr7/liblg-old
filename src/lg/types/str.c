@@ -23,6 +23,10 @@ static void clone_val(struct lg_val *src, struct lg_val *dst) {
   strcpy(ds->data, ss->data);
 }
 
+static bool true_val(struct lg_val *val) {
+  return val->as_str->len;
+}
+
 static bool is_val(struct lg_val *x, struct lg_val *y) {
   return x->as_str == y->as_str;
 }
@@ -47,9 +51,13 @@ void lg_str_type_init() {
   lg_type_init(&lg_str_type, lg_str("Str"));
   lg_str_type.copy_val = copy_val;
   lg_str_type.clone_val = clone_val;
+  
+  lg_str_type.true_val = true_val;
   lg_str_type.is_val = is_val;
   lg_str_type.eq_val = eq_val;
+
   lg_str_type.ref_val = ref_val;
   lg_str_type.deref_val = deref_val;
+
   lg_str_type.dump_val = dump_val;
 }

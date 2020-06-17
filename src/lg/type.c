@@ -11,6 +11,10 @@ static void clone_val(struct lg_val *src, struct lg_val *dst) {
   src->type->copy_val(src, dst);
 }
 
+static bool true_val(struct lg_val *val) {
+  return true;
+}
+
 static bool eq_val(struct lg_val *x, struct lg_val *y) {
   return x->type->is_val(x, y);
 }
@@ -27,6 +31,7 @@ struct lg_type *lg_type_init(struct lg_type *type, struct lg_str *id) {
   type->copy_val = NULL;
   type->clone_val = clone_val;
 
+  type->true_val = true_val;
   type->is_val = NULL;
   type->eq_val = eq_val;
   

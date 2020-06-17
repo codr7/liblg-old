@@ -38,6 +38,12 @@ void lg_clone(struct lg_val *src, struct lg_val *dst) {
   t->clone_val(src, dst);
 }
 
+bool lg_true(struct lg_val *val) {
+  struct lg_type *t = val->type;
+  assert(t->true_val);
+  return t->true_val(val);
+}
+
 bool lg_is(struct lg_val *x, struct lg_val *y) {
   struct lg_type *t = x->type;
   assert(t->is_val);

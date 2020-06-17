@@ -22,6 +22,10 @@ static void clone_val(struct lg_val *src, struct lg_val *dst) {
   memcpy(ds->items.slots, ss->items.slots, lg_align(0, sizeof(struct lg_val))*len);
 }
 
+static bool true_val(struct lg_val *val) {
+  return lg_stack_len(val->as_stack);
+}
+
 static bool is_val(struct lg_val *x, struct lg_val *y) {
   return x->as_stack == y->as_stack;
 }
@@ -61,9 +65,13 @@ void lg_stack_type_init() {
   lg_type_init(&lg_stack_type, lg_str("Stack"));
   lg_stack_type.copy_val = copy_val;
   lg_stack_type.clone_val = clone_val;
+
+  lg_stack_type.true_val = true_val;
   lg_stack_type.is_val = is_val;
   lg_stack_type.eq_val = eq_val;
+
   lg_stack_type.ref_val = ref_val;
   lg_stack_type.deref_val = deref_val;
+
   lg_stack_type.dump_val = dump_val;
 }

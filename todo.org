@@ -1,9 +1,6 @@
-* add lg_type.true_val
-** default true
-** false for empty stacks, strings, 0 & F
-** use in lg_or op
 * add and/xor
-* ---
+* add stack parser
+* add string parser
 * add let macro
 ** map name to stack pos
 ** store bindings at bottom of stack

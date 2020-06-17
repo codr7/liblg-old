@@ -5,7 +5,7 @@
 struct lg_op *lg_or_eval(struct lg_op *op, struct lg_vm *vm) {
   struct lg_val *x = lg_peek(vm->stack);
 
-  if (x->as_bool) {
+  if (lg_true(x)) {
     return op + op->as_or.nops + 1;
   }
 
