@@ -1,5 +1,6 @@
 #include "lg/error.h"
 #include "lg/str.h"
+#include "lg/stream.h"
 #include "lg/type.h"
 #include "lg/val.h"
 
@@ -21,10 +22,15 @@ static bool deref_val(struct lg_val *val) {
   return lg_error_deref(val->as_error);
 }
 
+static void dump_val(struct lg_val *val, struct lg_stream *out) {
+  lg_printf(out, "Error(%p)", val->as_error);
+}
+
 void lg_error_type_init() {
   lg_type_init(&lg_error_type, lg_str("Error"));
   lg_error_type.copy_val = copy_val;
   lg_error_type.is_val = is_val;
   lg_error_type.ref_val = ref_val;
   lg_error_type.deref_val = deref_val;
+  lg_error_type.dump_val = dump_val;
 }

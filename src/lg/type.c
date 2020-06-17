@@ -29,12 +29,12 @@ struct lg_type *lg_type_init(struct lg_type *type, struct lg_str *id) {
 
   type->is_val = NULL;
   type->eq_val = eq_val;
-
-  type->compile_val = compile_val;
   
   type->ref_val = NULL;
   type->deref_val = NULL;
 
+  type->dump_val = NULL;
+  type->compile_val = compile_val;
   return type;
 }
 

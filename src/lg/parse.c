@@ -154,11 +154,12 @@ const char *lg_parse_int(struct lg_pos *pos,
   char c = 0;
 
   while ((c = *in)) {
-    if (!isdigit(c)) {
+    const int cv = char_int(c, base);
+
+    if (cv == -1) {
       break;
     }
-
-    const int cv = char_int(c, base);
+    
     v = v * base + cv;
     in++;
     pos->col++;

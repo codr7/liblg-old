@@ -14,7 +14,13 @@ struct lg_env *lg_env_new(struct lg_env *parent) {
 
 static enum lg_cmp cmp(const void *x, const void *y) {
   const struct lg_str *xs = x, *ys = y;
-  return strcmp(xs->data, ys->data);
+  int res = strcmp(xs->data, ys->data);
+
+  if (res < 0) {
+    return LG_LT;
+  }
+
+  return (res > 0) ? LG_GT : LG_EQ;
 }
 
 static const void *key(const void *val) {
@@ -47,23 +53,37 @@ struct lg_val *lg_add(struct lg_env *env, struct lg_pos pos, struct lg_str *key,
   struct lg_binding *b = lg_bset_add(&env->bindings, key);
 
   if (b == NULL) {
-    return false;
+    return NULL;
   }
 
   b->key = key;
   return lg_val_init(&b->val, pos, type);
 }
 
-void lg_add_macro(struct lg_env *env,
+bool lg_add_macro(struct lg_env *env,
 		  struct lg_pos pos,
 		  struct lg_str *id,
 		  uint8_t nargs,
 		  lg_macro_imp imp) {
-  lg_add(env, pos, id, &lg_macro_type)->as_macro = lg_macro_new(id, nargs, imp);
+  struct lg_val *v = lg_add(env, pos, id, &lg_macro_type);
+
+  if (!v) {
+    return false;
+  }
+  
+  v->as_macro = lg_macro_new(id, nargs, imp);
+  return true;
 }
 
-void lg_add_type(struct lg_env *env, struct lg_pos pos, struct lg_type *type) {
-  lg_add(env, pos, lg_str_ref(type->id), &lg_meta_type)->as_meta = lg_type_ref(type);
+bool lg_add_type(struct lg_env *env, struct lg_pos pos, struct lg_type *type) {
+  struct lg_val *v = lg_add(env, pos, lg_str_ref(type->id), &lg_meta_type);
+
+  if (!v) {
+    return false;
+  }
+  
+  v->as_meta = lg_type_ref(type);
+  return true;
 }
 
 struct lg_val *lg_get(struct lg_env *env, struct lg_str *id) {

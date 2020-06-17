@@ -34,13 +34,13 @@ void lg_env_deinit(struct lg_env *env);
 
 struct lg_val *lg_add(struct lg_env *env, struct lg_pos pos, struct lg_str *key, struct lg_type *type);
 
-void lg_add_macro(struct lg_env *env,
+bool lg_add_macro(struct lg_env *env,
 		  struct lg_pos pos,
 		  struct lg_str *id,
 		  uint8_t nargs,
 		  lg_macro_imp imp);
 		  
-void lg_add_type(struct lg_env *env, struct lg_pos pos, struct lg_type *type);
+bool lg_add_type(struct lg_env *env, struct lg_pos pos, struct lg_type *type);
 
 struct lg_val *lg_get(struct lg_env *env, struct lg_str *id);
 

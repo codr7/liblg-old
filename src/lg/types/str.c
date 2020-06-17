@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "lg/str.h"
+#include "lg/stream.h"
 #include "lg/type.h"
 #include "lg/types/str.h"
 #include "lg/val.h"
@@ -38,6 +39,10 @@ static bool deref_val(struct lg_val *val) {
   return lg_str_deref(val->as_str);
 }
 
+static void dump_val(struct lg_val *val, struct lg_stream *out) {
+  lg_printf(out, "\"%s\"", val->as_str->data);
+}
+
 void lg_str_type_init() {
   lg_type_init(&lg_str_type, lg_str("Str"));
   lg_str_type.copy_val = copy_val;
@@ -46,4 +51,5 @@ void lg_str_type_init() {
   lg_str_type.eq_val = eq_val;
   lg_str_type.ref_val = ref_val;
   lg_str_type.deref_val = deref_val;
+  lg_str_type.dump_val = dump_val;
 }

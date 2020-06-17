@@ -55,3 +55,9 @@ bool lg_val_compile(struct lg_val *val, struct lg_stack *in, struct lg_block *ou
   assert(t->compile_val);
   return t->compile_val(val, in, out, vm);
 }
+
+void lg_dump(struct lg_val *val, struct lg_stream *out) {
+  struct lg_type *t = val->type;
+  assert(t->dump_val);
+  t->dump_val(val, out);
+}

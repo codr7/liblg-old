@@ -2,6 +2,7 @@
 
 #include "lg/stack.h"
 #include "lg/str.h"
+#include "lg/stream.h"
 #include "lg/type.h"
 #include "lg/types/stack.h"
 #include "lg/util.h"
@@ -52,6 +53,10 @@ static bool deref_val(struct lg_val *val) {
   return lg_stack_deref(val->as_stack);
 }
 
+static void dump_val(struct lg_val *val, struct lg_stream *out) {
+  lg_stack_dump(val->as_stack, out);
+}
+
 void lg_stack_type_init() {
   lg_type_init(&lg_stack_type, lg_str("Stack"));
   lg_stack_type.copy_val = copy_val;
@@ -60,4 +65,5 @@ void lg_stack_type_init() {
   lg_stack_type.eq_val = eq_val;
   lg_stack_type.ref_val = ref_val;
   lg_stack_type.deref_val = deref_val;
+  lg_stack_type.dump_val = dump_val;
 }

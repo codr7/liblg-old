@@ -7,6 +7,7 @@
 struct lg_block;
 struct lg_stack;
 struct lg_str;
+struct lg_stream;
 struct lg_val;
 struct lg_vm;
 
@@ -14,16 +15,17 @@ struct lg_type {
   struct lg_str *id;
   int16_t refs;
   
-  void (*copy_val)(struct lg_val *src, struct lg_val *dst);
   void (*clone_val)(struct lg_val *src, struct lg_val *dst);
+  void (*copy_val)(struct lg_val *src, struct lg_val *dst);
 
   bool (*is_val)(struct lg_val *x, struct lg_val *y);
   bool (*eq_val)(struct lg_val *x, struct lg_val *y);
-
-  bool (*compile_val)(struct lg_val *val, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm);
   
   void (*ref_val)(struct lg_val *);
   bool (*deref_val)(struct lg_val *);
+
+  void (*dump_val)(struct lg_val *val, struct lg_stream *out);
+  bool (*compile_val)(struct lg_val *val, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm);
 };
 
 struct lg_type *lg_type_init(struct lg_type *type, struct lg_str *id);

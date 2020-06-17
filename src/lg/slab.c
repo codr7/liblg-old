@@ -21,6 +21,10 @@ void lg_slab_grow(struct lg_slab *slab, size_t size, size_t cap) {
   slab->slots = realloc(slab->slots, size*slab->cap);
 }
 
+void lg_slab_clear(struct lg_slab *slab) {
+  slab->len = 0;
+}
+
 void *lg_slab_get(struct lg_slab *slab, size_t size, size_t i) {
   return slab->slots + size*i;
 }
