@@ -38,15 +38,19 @@ void lg_repl(struct lg_vm *vm, FILE *in, FILE *out) {
       struct lg_pos p;
       lg_pos_init(&p, "repl", 0, 0);
 
-      if (!lg_parse(&p, is.data, &forms, vm) ||
-	  !(lg_compile(&forms, &block, vm) && lg_emit(&block, p, LG_STOP)) ||
-	  !lg_eval(lg_block_start(&block), vm)) {
-	lg_stack_do(&vm->errors, e) {
-	  fputs(e->as_error->message, out);
-	  fputs("\n\n", out);	  
+      if (is.len > 1) {
+	if (!lg_parse(&p, is.data, &forms, vm) ||
+	    !(lg_compile(&forms, &block, vm) && lg_emit(&block, p, LG_STOP)) ||
+	    !lg_eval(lg_block_start(&block), vm)) {
+	  lg_stack_do(&vm->errors, e) {
+	    fputs(e->as_error->message, out);
+	    fputs("\n\n", out);	  
+	  }
+	  
+	  lg_stack_clear(&vm->errors);
 	}
-
-	lg_stack_clear(&vm->errors);
+      } else {
+	lg_stack_clear(vm->stack);
       }
 
       lg_pos_deinit(&p);

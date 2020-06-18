@@ -12,6 +12,26 @@
 #include "lg/types/stack.h"
 #include "lg/types/str.h"
 
+static bool and_imp(struct lg_pos pos, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
+  struct lg_val y = *lg_pop(in), x = *lg_pop(in);
+
+  size_t nops = lg_block_len(out);
+
+  if (!lg_val_compile(&y, in, out, vm)) {
+    return false;
+  }
+
+  lg_emit(out, pos, LG_AND)->as_and.nops = lg_block_len(out) - nops;
+
+  if (!lg_val_compile(&x, in, out, vm)) {
+    return false;
+  }
+
+  lg_deref(&x);
+  lg_deref(&y);
+  return true;
+}
+
 static bool or_imp(struct lg_pos pos, struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {
   struct lg_val y = *lg_pop(in), x = *lg_pop(in);
 
@@ -45,5 +65,6 @@ void lg_add_abc_lib(struct lg_env *env) {
   lg_add(env, p, lg_str("T"), &lg_bool_type)->as_bool = true;
   lg_add(env, p, lg_str("F"), &lg_bool_type)->as_bool = false;
 
+  lg_add_macro(env, p, lg_str("and"), 2, and_imp);
   lg_add_macro(env, p, lg_str("or"), 2, or_imp);
 }

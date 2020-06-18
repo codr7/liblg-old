@@ -1,4 +1,4 @@
-* add and/xor
+* add xor
 * add stack parser
 * add string parser
 * add let macro

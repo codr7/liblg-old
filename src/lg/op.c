@@ -25,6 +25,8 @@ void lg_op_deinit(struct lg_op *op) {
 
 struct lg_op *lg_op_eval(struct lg_op *op, struct lg_vm *vm) {
   switch (op->type) {
+  case LG_AND:
+    return lg_and_eval(op, vm);
   case LG_OR:
     return lg_or_eval(op, vm);
   case LG_POP_STACK:
