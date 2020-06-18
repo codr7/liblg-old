@@ -16,7 +16,7 @@ struct lg_stack *lg_stack_new(struct lg_stack *parent) {
 
 struct lg_stack *lg_stack_init(struct lg_stack *stack, struct lg_stack *parent) {
   stack->parent = parent ? lg_stack_ref(parent) : NULL;
-  lg_slab_init(&stack->items);
+  lg_slab_init(&stack->items, sizeof(struct lg_val));
   stack->refs = 1;
   return stack;
 }
@@ -31,7 +31,7 @@ void lg_stack_deinit(struct lg_stack *stack) {
 }
 
 void lg_stack_grow(struct lg_stack *stack, size_t cap) {
-  lg_slab_grow(&stack->items, sizeof(struct lg_val), cap);
+  lg_slab_grow(&stack->items, cap);
 }
 
 size_t lg_stack_len(struct lg_stack *stack) {
@@ -60,16 +60,16 @@ void lg_stack_dump(struct lg_stack *stack, struct lg_stream *out) {
 }
 
 struct lg_val *lg_push(struct lg_stack *stack) {
-  return (struct lg_val *)lg_slab_push(&stack->items, sizeof(struct lg_val));
+  return (struct lg_val *)lg_slab_push(&stack->items);
 }
 
 struct lg_val *lg_pop(struct lg_stack *stack) {
-  return (struct lg_val *)lg_slab_pop(&stack->items, sizeof(struct lg_val));
+  return (struct lg_val *)lg_slab_pop(&stack->items);
 }
 
 struct lg_val *lg_peek(struct lg_stack *stack) {
   struct lg_slab *is = &stack->items;
-  return lg_slab_get(is, sizeof(struct lg_val), is->len-1);
+  return lg_slab_get(is, is->len-1);
 }
 
 bool lg_compile(struct lg_stack *in, struct lg_block *out, struct lg_vm *vm) {

@@ -19,7 +19,7 @@ static void clone_val(struct lg_val *src, struct lg_val *dst) {
   dst->as_stack = ds;
   const size_t len = lg_stack_len(ss);
   lg_stack_grow(ds, len);
-  memcpy(ds->items.slots, ss->items.slots, lg_align(0, sizeof(struct lg_val))*len);
+  memcpy(lg_slab_get(&ds->items, 0), lg_slab_get(&ss->items, 0), lg_align(0, sizeof(struct lg_val))*len);
 }
 
 static bool true_val(struct lg_val *val) {
@@ -38,7 +38,7 @@ static bool eq_val(struct lg_val *x, struct lg_val *y) {
     return false;
   }
   
-  struct lg_val *xv = (struct lg_val *)xs->items.slots, *yv = (struct lg_val *)ys->items.slots;
+  struct lg_val *xv = lg_slab_get(&xs->items, 0), *yv = lg_slab_get(&ys->items, 0);
   
   for (size_t i = 0; i < xl; i++, xv++, yv++) {
     if (!lg_eq(xv, yv)) {

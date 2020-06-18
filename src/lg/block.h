@@ -9,7 +9,7 @@
 
 #define _lg_block_do(block, op, _i)					\
   size_t _i = 0;							\
-  for (struct lg_op *op = (struct lg_op *)block->ops.slots;		\
+  for (struct lg_op *op = lg_slab_get(&block->ops, 0);			\
        _i < block->ops.len;						\
        _i++, op++)
 

@@ -1,3 +1,4 @@
+* add for
 * add xor
 * add stack parser
 * add string parser

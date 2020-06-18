@@ -6,12 +6,12 @@
 #include "lg/val.h"
 #include "lg/util.h"
 
-#define _lg_env_do(env, binding, _i)					\
-  size_t _i = 0;							\
-  for (struct lg_binding *binding =					\
-		(struct lg_binding *)(env)->bindings.items.slots;	\
-  _i < (env)->bindings.items.len;					\
-  _i++, binding++)
+#define _lg_env_do(env, binding, _i)			\
+  size_t _i = 0;					\
+  for (struct lg_binding *binding =			\
+	 lg_slab_get(&(env)->bindings.items, 0);	\
+       _i < (env)->bindings.items.len;			\
+       _i++, binding++)
 
 #define lg_env_do(env, binding)			\
   _lg_env_do(env, binding, lg_unique(i))

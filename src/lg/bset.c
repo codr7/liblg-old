@@ -8,8 +8,7 @@ struct lg_bset *lg_bset_new(size_t size, lg_cmp_t cmp) {
 }
 
 struct lg_bset *lg_bset_init(struct lg_bset *bset, size_t size, lg_cmp_t cmp) {
-  lg_slab_init(&bset->items);
-  bset->size = size;
+  lg_slab_init(&bset->items, size);
   bset->cmp = cmp;
   bset->key = NULL;
   bset->refs = 1;
@@ -25,7 +24,7 @@ size_t lg_bset_find(struct lg_bset *bset, void *key, bool *ok) {
 
   while (min < max) {
     const size_t i = (min+max)/2;
-    const void *v = lg_slab_get(&bset->items, bset->size, i);
+    const void *v = lg_slab_get(&bset->items, i);
     const void *k = bset->key ? bset->key(v) : v;
 
     switch (bset->cmp(key, k)) {
@@ -54,7 +53,7 @@ size_t lg_bset_len(struct lg_bset *bset) {
 void *lg_bset_get(struct lg_bset *bset, void *key) {
   bool ok = false;
   const size_t i = lg_bset_find(bset, key, &ok);
-  return ok ? lg_slab_get(&bset->items, bset->size, i) : NULL;
+  return ok ? lg_slab_get(&bset->items, i) : NULL;
 }
 
 void *lg_bset_add(struct lg_bset *bset, void *key) {
@@ -65,5 +64,5 @@ void *lg_bset_add(struct lg_bset *bset, void *key) {
     return NULL;
   }
   
-  return lg_slab_insert(&bset->items, bset->size, i);
+  return lg_slab_insert(&bset->items, i);
 }

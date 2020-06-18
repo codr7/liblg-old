@@ -7,10 +7,11 @@
 #include "lg/util.h"
 #include "lg/val.h"
 
-#define _lg_stack_do(stack, item, _i)					\
-  size_t _i = 0;							\
-  for (struct lg_val *item = (struct lg_val *)(stack)->items.slots;	\
-       _i < (stack)->items.len;						\
+#define _lg_stack_do(stack, item, _i)				\
+  size_t _i = 0;						\
+  for (struct lg_val *item =					\
+	 (struct lg_val *)lg_slab_get(&(stack)->items, 0);	\
+       _i < (stack)->items.len;					\
        _i++, item++)
 
 #define lg_stack_do(stack, item)		\

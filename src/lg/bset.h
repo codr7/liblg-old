@@ -9,7 +9,6 @@
 typedef const void *(*lg_bset_key_t)(const void *); 
 
 struct lg_bset {
-  size_t size;
   struct lg_slab items;
   lg_cmp_t cmp;
   lg_bset_key_t key;
